@@ -16,6 +16,7 @@ const GuestAddressPage = () => {
     country: currentCurrency.name,
     phone: "",
     customer_name: "",
+    email: "",
   });
 
   const { postCode, setPostCode } = useStoreStatus();
@@ -121,6 +122,18 @@ const GuestAddressPage = () => {
                     />
                   </p>
                   <>
+                    <p>
+                      <label>
+                        {currentLanguage.your_email || "Your Email"}{" "}
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="example@email.com"
+                        value={guestShippingAddress.email}
+                        onChange={handleChange}
+                      />
+                    </p>
                     <p>
                       <label>
                         {currentLanguage.apartment || "Apartment / House No."} *

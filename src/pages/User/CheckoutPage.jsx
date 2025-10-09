@@ -192,10 +192,14 @@ const CheckoutPage = () => {
     };
 
     try {
-      const resp =
-        isGuestLogin === "true"
-          ? await OrderPlaceWithGustUser(body)
-          : await OrderPlace(body);
+      let resp;
+      if (isGuestLogin === "true") {
+        body.email = guest_address?.email || null;
+        console.log("body ===>", body);
+        resp = await OrderPlaceWithGustUser(body);
+      } else {
+        resp = await OrderPlace(body);
+      }
       setOrderId(resp.data.id);
       setOrderSuccess(true);
       localStorage.setItem("order_placed", "true");

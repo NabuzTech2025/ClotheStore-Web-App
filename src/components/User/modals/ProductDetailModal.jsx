@@ -274,7 +274,7 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                         color: "#624ba1",
                       }}
                     >
-                      {format(product.price)}
+                      {format(product.price * quantity)}
                     </span>
                   </div>
 

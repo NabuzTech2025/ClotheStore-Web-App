@@ -152,7 +152,7 @@ const CheckoutPage = () => {
       type: guest_address?.type || "shipping",
       line1: guest_address?.line1 || "",
       city: guest_address?.city || "",
-      zip: guest_address?.zip || "",
+      zip: "00000",
       country: guest_address?.country || "",
       phone: guest_address?.phone || "",
       customer_name: guest_address?.customer_name || "",

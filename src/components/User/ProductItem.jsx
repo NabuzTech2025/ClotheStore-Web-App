@@ -53,17 +53,13 @@ const ProductItem = ({ product }) => {
     <div className="col">
       <div className="product-cnt-col">
         {/* Product image */}
-        <div className="prdct-img" onClick={handleProductDetailClick} style={{ cursor: 'pointer' }}>
+        <div
+          className="prdct-img"
+          onClick={handleProductDetailClick}
+          style={{ cursor: "pointer" }}
+        >
           <img
-            src={
-              product.image_url ? (product.image_url.startsWith('http') ? product.image_url : `${imageBaseUrl}${product.image_url}`) :
-              product.image ? (product.image.startsWith('http') ? product.image : `${imageBaseUrl}${product.image}`) :
-              product.imageUrl ? (product.imageUrl.startsWith('http') ? product.imageUrl : `${imageBaseUrl}${product.imageUrl}`) :
-              product.photo ? (product.photo.startsWith('http') ? product.photo : `${imageBaseUrl}${product.photo}`) :
-              product.photo_url ? (product.photo_url.startsWith('http') ? product.photo_url : `${imageBaseUrl}${product.photo_url}`) :
-              product.images ? (product.images[0] ? (product.images[0].startsWith('http') ? product.images[0] : `${imageBaseUrl}${product.images[0]}`) : "/assets/images/t-shirt.png") :
-              "/assets/images/t-shirt.png"
-            }
+            src={product.image_url.split("?")[0]}
             alt={product.name}
             style={{ width: "100%", borderRadius: "8px" }}
             onError={(e) => {
@@ -91,24 +87,27 @@ const ProductItem = ({ product }) => {
           {/* ADD BUTTON */}
           <div className="prdct-col-counter" style={{ position: "relative" }}>
             {quantity > 0 && (
-              <div className="quantity-display" style={{
-                position: "absolute",
-                top: "-8px",
-                left: "-8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#FCB906", // Yellow color
-                color: "#624BA1",
-                borderRadius: "50%",
-                width: "24px",
-                height: "24px",
-                fontSize: "12px",
-                fontWeight: "bold",
-                zIndex: "10",
-                
-                boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
-              }}>
+              <div
+                className="quantity-display"
+                style={{
+                  position: "absolute",
+                  top: "-8px",
+                  left: "-8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#FCB906", // Yellow color
+                  color: "#624BA1",
+                  borderRadius: "50%",
+                  width: "24px",
+                  height: "24px",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  zIndex: "10",
+
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                }}
+              >
                 {quantity}
               </div>
             )}
@@ -124,13 +123,11 @@ const ProductItem = ({ product }) => {
                 backgroundImage: "url('./assets/images/addCart-icon.png')",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
-                backgroundSize: "20px 20px"
+                backgroundSize: "20px 20px",
               }}
-            >
-            </button>
+            ></button>
           </div>
         </div>
-        
       </div>
 
       {/* Product Detail Modal */}

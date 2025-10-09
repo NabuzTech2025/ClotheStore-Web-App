@@ -113,7 +113,7 @@ const CartButton = () => {
         }`}
       >
         <div className="cart-totalprice">
-          <img src={`assets/user/img/cart-icon.svg`} alt="Cart" />
+          <img src={`./assets/images/addCart-icon.png`} alt="Cart" />
           <h5>
             <span>
               {itemCount}{" "}

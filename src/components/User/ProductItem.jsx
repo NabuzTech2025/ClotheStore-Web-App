@@ -62,9 +62,9 @@ const ProductItem = ({ product }) => {
             src={product.image_url.split("?")[0]}
             alt={product.name}
             style={{ width: "100%", borderRadius: "8px" }}
-            onError={(e) => {
-              e.target.src = "/assets/images/t-shirt.png";
-            }}
+            // onError={(e) => {
+            //   e.target.src = "/assets/images/t-shirt.png";
+            // }}
           />
         </div>
 

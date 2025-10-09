@@ -15,13 +15,13 @@ function Suspense_Loader() {
 
   const iconStyle = {
     fontSize: "3rem",
-    color: "#f97316", // deep orange
+    color: "#624ba1", // deep orange
     animation: "rotate360 2s linear infinite",
   };
 
   const textStyle = {
     marginTop: "1rem",
-    color: "#f97316",
+    color: "#624ba1",
     fontSize: "1.25rem",
     fontWeight: "600",
   };

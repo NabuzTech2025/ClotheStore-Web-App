@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import AddressModal from "../User/modals/AddressModal";
 import LoginModal from "@/components/User/modals/LoginModal";
@@ -143,30 +142,6 @@ const Header = ({ status, onSearch }) => {
                   <>
                     {/* Desktop */}
                     <div className="header-middle-area d-none d-sm-flex">
-                      {/* Postcode display commented out
-                      {order_type === "delivery" && (
-                        <div
-                          className="header-postcode-col"
-                          onClick={() => setShowAddressModal(true)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <div className="postcode-icon">
-                            <img
-                              src={`assets/user/img/location-icon.svg`}
-                              alt="Location"
-                            />
-                          </div>
-                          <div className="header-postcode-cnt">
-                            <h3>
-                              {selectedPostcode === "" || !selectedPostcode
-                                ? currentLanguage.postCode
-                                : selectedPostcode}
-                            </h3>
-                            <i className="bi bi-chevron-down"></i>
-                          </div>
-                        </div>
-                      )} */}
-
                       <div className="header-search">
                         <div className="form">
                           <img
@@ -185,34 +160,7 @@ const Header = ({ status, onSearch }) => {
                     </div>
 
                     {/* Mobile */}
-                    <div className="d-sm-none mt-2">
-                      {/* Mobile postcode display commented out
-                      {order_type === "delivery" && (
-                        <div
-                          className="header-postcode-col"
-                          onClick={() => setShowAddressModal(true)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <img
-                            src={`assets/user/img/location-icon.svg`}
-                            alt="Location"
-                            style={{ width: "20px" }}
-                          />
-                          <h3
-                            style={{
-                              fontSize: isSmallestViewport ? "11px" : "13px",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            {selectedPostcode === "" || !selectedPostcode
-                              ? currentLanguage.postCode
-                              : selectedPostcode}
-                          </h3>
-                        </div>
-                      )} */}
-                    </div>
+                    <div className="d-sm-none mt-2"></div>
                   </>
                 )}
               </div>
@@ -267,7 +215,11 @@ const Header = ({ status, onSearch }) => {
                         e.preventDefault();
                         setShowLoginModal(true);
                       }}
-                      style={{ display: "flex", alignItems: "center" }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "#624ba1",
+                      }}
                     >
                       <img src={userLogo} alt="Login" />
                       <span style={{ marginLeft: "5px" }}>
@@ -275,182 +227,6 @@ const Header = ({ status, onSearch }) => {
                       </span>
                     </a>
                   )}
-
-                  {/* Language Dropdown - Right next to login */}
-                  {/* <div
-                    className="language-dropdown"
-                    style={{ position: "relative" }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div
-                      className="language-trigger"
-                      onClick={() => setShowLangDropdown(!showLangDropdown)}
-                      style={{
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        padding: "5px",
-                        borderRadius: "4px",
-                        transition: "background-color 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = "#f8f9fa";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = "transparent";
-                      }}
-                    >
-                      <img
-                        src={
-                          language === "de"
-                            ? "/assets/user/img/german-flag.jpg"
-                            : "/assets/user/img/english-flag.jpg"
-                        }
-                        alt={language === "de" ? "German" : "English"}
-                        style={{
-                          width: "24px",
-                          height: "24px",
-                          borderRadius: "50%",
-                          objectFit: "cover",
-                        }}
-                      />
-                      <span
-                        style={{
-                          marginLeft: "5px",
-                          fontSize: "12px",
-                          fontWeight: "600",
-                          color: "#333",
-                        }}
-                      >
-                        {language === "de" ? "GER" : "ENG"}
-                      </span>
-                      <i
-                        className="bi bi-chevron-down"
-                        style={{
-                          marginLeft: "3px",
-                          fontSize: "10px",
-                          transform: showLangDropdown
-                            ? "rotate(180deg)"
-                            : "rotate(0deg)",
-                          transition: "transform 0.2s",
-                        }}
-                      ></i>
-                    </div>
-
-                    {/* Language Options Dropdown */}
-                    {/* {showLangDropdown && (
-                      <div
-                        className="language-options"
-                        style={{
-                          position: "absolute",
-                          top: "100%",
-                          right: "0",
-                          background: "#fff",
-                          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                          borderRadius: "8px",
-                          padding: "8px 0",
-                          zIndex: 1000,
-                          minWidth: "140px",
-                          border: "1px solid #e1e5e9",
-                          marginTop: "2px",
-                        }}
-                      >
-                        <div
-                          onClick={() => handleLanguageChange("de")}
-                          style={{
-                            padding: "10px 15px",
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            fontSize: "14px",
-                            backgroundColor:
-                              language === "de" ? "#f8f9fa" : "transparent",
-                            transition: "background-color 0.2s",
-                          }}
-                          onMouseEnter={(e) => {
-                            if (language !== "de") {
-                              e.target.style.backgroundColor = "#f1f3f4";
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            if (language !== "de") {
-                              e.target.style.backgroundColor = "transparent";
-                            }
-                          }}
-                        >
-                          <img
-                            src="/assets/user/img/german-flag.jpg"
-                            // alt="German"
-                            style={{
-                              width: "25px",
-                              height: "25px",
-                              borderRadius: "50%",
-                              marginRight: "12px",
-                              objectFit: "cover",
-                            }}
-                          />
-                          <span>German</span>
-                          {language === "de" && (
-                            <i
-                              className="bi bi-check"
-                              style={{
-                                marginLeft: "auto",
-                                color: "#28a745",
-                                fontWeight: "bold",
-                              }}
-                            ></i>
-                          )}
-                        </div>
-
-                        <div
-                          onClick={() => handleLanguageChange("en")}
-                          style={{
-                            padding: "10px 15px",
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            fontSize: "14px",
-                            backgroundColor:
-                              language === "en" ? "#f8f9fa" : "transparent",
-                            transition: "background-color 0.2s",
-                          }}
-                          onMouseEnter={(e) => {
-                            if (language !== "en") {
-                              e.target.style.backgroundColor = "#f1f3f4";
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            if (language !== "en") {
-                              e.target.style.backgroundColor = "transparent";
-                            }
-                          }}
-                        >
-                          <img
-                            src="/assets/user/img/english-flag.jpg"
-                            alt="English"
-                            style={{
-                              width: "20px",
-                              height: "20px",
-                              borderRadius: "50%",
-                              marginRight: "10px",
-                              objectFit: "cover",
-                            }}
-                          />
-                          <span>English</span>
-                          {language === "en" && (
-                            <i
-                              className="bi bi-check"
-                              style={{
-                                marginLeft: "auto",
-                                color: "#28a745",
-                                fontWeight: "bold",
-                              }}
-                            ></i>
-                          )}
-                        </div>
-                      </div>
-                    )} */}
-                  {/* </div> */}
                 </div>
 
                 {/* Account Dropdown Menu */}

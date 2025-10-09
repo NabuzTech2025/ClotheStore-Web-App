@@ -3,9 +3,7 @@ name: Deploy Food Store Frontend
 on:
   push:
     branches:
-      - adria-main
-      - bombay-main
-      - chotivalaswiss-main
+      - main
 
 jobs:
   build-and-push:
@@ -21,49 +19,21 @@ jobs:
       - name: Docker Login
         run: docker login -u jasveer399 -p ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Set ENV based on Branch
+      - name: Set ENV for rrfootballshirts
         id: setenv
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/adria-main" ]]; then
-            echo "image_tag=adria" >> $GITHUB_OUTPUT
-            echo "server_ip=138.199.144.4" >> $GITHUB_OUTPUT
-            echo "port=3001" >> $GITHUB_OUTPUT
-            echo "VITE_APP_NAME=Adria" >> $GITHUB_ENV
-            echo "VITE_STORE_ID=13" >> $GITHUB_ENV
-            echo "VITE_APP_BASE_URL=https://adrialandshut.de" >> $GITHUB_ENV
-            echo "VITE_APP_COPYRIGHT_TEXT=Copyright © Pizzaservice Adria" >> $GITHUB_ENV
-            echo "VITE_COUNTRY=GERMANY" >> $GITHUB_ENV
-            echo "VITE_APP_BASE_ROUTE=" >> $GITHUB_ENV
-            echo "VITE_APP_MODE=DEVELOPMENT" >> $GITHUB_ENV
-            echo "VITE_PAYMENT_SANDBOX_CLIENT_ID=AYtWpBvjCBR9vG3hhWICqLmO50cydwWRZ3zzI9momAkgivwMjJ9X3wQICdgCiwv4J7iQVBn_EOKJDVUU" >> $GITHUB_ENV
-            echo "VITE_PAYMENT_LIVE_CLIENT_ID=${{ secrets.PAYPAL_LIVE_CLIENT_ID_ADRIA }}" >> $GITHUB_ENV
-          elif [[ "${{ github.ref }}" == "refs/heads/bombay-main" ]]; then
-            echo "image_tag=bombay" >> $GITHUB_OUTPUT
-            echo "server_ip=138.199.144.4" >> $GITHUB_OUTPUT
-            echo "port=3002" >> $GITHUB_OUTPUT
-            echo "VITE_APP_NAME=Bombay" >> $GITHUB_ENV
-            echo "VITE_STORE_ID=14" >> $GITHUB_ENV
-            echo "VITE_APP_BASE_URL=https://bombay-online.de" >> $GITHUB_ENV
-            echo "VITE_APP_COPYRIGHT_TEXT=© Bombay Heimservice, Verdistr. 103, 81247 München" >> $GITHUB_ENV
-            echo "VITE_COUNTRY=GERMANY" >> $GITHUB_ENV
-            echo "VITE_APP_BASE_ROUTE=" >> $GITHUB_ENV
-            echo "VITE_APP_MODE=PRODUCTION" >> $GITHUB_ENV
-            echo "VITE_PAYMENT_SANDBOX_CLIENT_ID=AXIO8j8Nl34w0HyOpSLsKJhZQlKl4SqOJS6e6nI6ygU_IEjiwFajwn5dR9NKDIQyoamwJOZa2MuzBCH_" >> $GITHUB_ENV
-            echo "VITE_PAYMENT_LIVE_CLIENT_ID=${{ secrets.PAYPAL_LIVE_CLIENT_ID_BOMBAY }}" >> $GITHUB_ENV
-          elif [[ "${{ github.ref }}" == "refs/heads/chotivalaswiss-main" ]]; then
-            echo "image_tag=chotivalaswiss" >> $GITHUB_OUTPUT
-            echo "server_ip=138.199.144.4" >> $GITHUB_OUTPUT
-            echo "port=3003" >> $GITHUB_OUTPUT
-            echo "VITE_APP_NAME=Chotivalaswiss" >> $GITHUB_ENV
-            echo "VITE_STORE_ID=12" >> $GITHUB_ENV
-            echo "VITE_APP_BASE_URL=https://chotivalaswiss.com/" >> $GITHUB_ENV
-            echo "VITE_APP_COPYRIGHT_TEXT=© 2018 bei Chotivala. Alle Rechte vorbehalten. Website gestaltet von Chotivala" >> $GITHUB_ENV
-            echo "VITE_COUNTRY=SWITZERLAND" >> $GITHUB_ENV
-            echo "VITE_APP_BASE_ROUTE=order-online" >> $GITHUB_ENV
-            echo "VITE_APP_MODE=DEVELOPMENT" >> $GITHUB_ENV
-            echo "VITE_PAYMENT_SANDBOX_CLIENT_ID=AYtWpBvjCBR9vG3hhWICqLmO50cydwWRZ3zzI9momAkgivwMjJ9X3wQICdgCiwv4J7iQVBn_EOKJDVUU" >> $GITHUB_ENV
-            echo "VITE_PAYMENT_LIVE_CLIENT_ID=${{ secrets.PAYPAL_LIVE_CLIENT_ID_CHOTIVALA }}" >> $GITHUB_ENV
-          fi
+          echo "image_tag=rrfootballshirts" >> $GITHUB_OUTPUT
+          echo "server_ip=138.199.144.4" >> $GITHUB_OUTPUT
+          echo "port=3006" >> $GITHUB_OUTPUT
+          echo "VITE_APP_NAME=rrfootballshirts" >> $GITHUB_ENV
+          echo "VITE_STORE_ID=16" >> $GITHUB_ENV
+          echo "VITE_APP_BASE_URL=https://rrfootballshirts.com" >> $GITHUB_ENV
+          echo "VITE_APP_COPYRIGHT_TEXT=Copyright © RR Football Shirts" >> $GITHUB_ENV
+          echo "VITE_COUNTRY=GERMANY" >> $GITHUB_ENV
+          echo "VITE_APP_BASE_ROUTE=" >> $GITHUB_ENV
+          echo "VITE_APP_MODE=PRODUCTION" >> $GITHUB_ENV
+          echo "VITE_PAYMENT_SANDBOX_CLIENT_ID=AYtWpBvjCBR9vG3hhWICqLmO50cydwWRZ3zzI9momAkgivwMjJ9X3wQICdgCiwv4J7iQVBn_EOKJDVUU" >> $GITHUB_ENV
+          echo "VITE_PAYMENT_LIVE_CLIENT_ID=${{ secrets.PAYPAL_LIVE_CLIENT_ID_RRFOOTBALLSHIRTS }}" >> $GITHUB_ENV
 
           # Common environment variables
           echo "VITE_IMAGE_BASE_URL=https://magskr.com" >> $GITHUB_ENV

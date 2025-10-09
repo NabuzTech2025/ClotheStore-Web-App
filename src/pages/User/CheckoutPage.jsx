@@ -748,7 +748,7 @@ const CheckoutPage = () => {
 
     const body = {
       user_id: user?.id || 0,
-      discount_id: discountId,
+      discount_id: null,
       note: orderNote,
       order_type: orderTypeCode,
       order_status: 1,

@@ -317,6 +317,12 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                   {/* Add to Cart Button */}
                   <div className="add-to-cart-section">
                     <button
+                      type="button"
+                      className="btn-close"
+                      onClick={onClose}
+                      aria-label="Close"
+                    ></button>
+                    <button
                       className="btn btn-primary btn-lg w-100"
                       onClick={handleAddToCart}
                       style={{

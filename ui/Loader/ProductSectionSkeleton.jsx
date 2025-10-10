@@ -11,7 +11,6 @@ const ProductSectionSkeleton = () => {
                 style={{
                   width: "100%",
                   aspectRatio: "1/1",
-                  borderRadius: "8px",
                 }}
               >
                 {/* MIUI shimmer effect */}

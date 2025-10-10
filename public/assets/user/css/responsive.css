@@ -33,8 +33,7 @@
   .cart-modal-popup .modal-dialog {
     margin: 0;
     height: 100vh;
-    max-width: 350px;
-    width: 350px;
+    width: 100%;
     position: fixed;
     top: 0;
     right: 0;
@@ -154,6 +153,10 @@
 }
 
 @media (max-width: 767px) {
+
+  .hm-product-section .modal {
+    z-index: 99999;
+  } 
   .brand-logo a img {
     max-height: 52px;
   }
@@ -256,7 +259,11 @@
     gap: 8px;
     margin-left: -15px;
     margin-right: -15px;
-    width: calc(100% + 30px);
+    width: calc(100% + 160px);
+  }
+
+  .hm-product-section * h5.modal-title {
+    display: none;
   }
 
   /* ul.hm-category-list li a {
@@ -299,8 +306,8 @@
   }
 
   .prdct-text h4 {
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 18px;
+    line-height: 24px;
   }
 
   .prdct-text p {

@@ -669,6 +669,7 @@ form.delivery-address-form button.btn-address-submit:focus {
 .cart-modal-popup .modal-dialog .modal-content {
   border-radius: 0;
   border: 0;
+  margin: 0;
 }
 
 .cart-modal-popup
@@ -716,7 +717,7 @@ form.delivery-address-form button.btn-address-submit:focus {
 
 .cart-modal-popup .modal-dialog .modal-content .modal-header button.btn-close {
   background: transparent;
-  margin-right: 5px;
+  margin-right: 0px;
   margin-top: 0;
   width: 40px;
   height: 40px;
@@ -1516,9 +1517,9 @@ section.checkout-area {
   transition: transform 0.3s ease;
 }
 
-.product-zoom-image:hover {
+/* .product-zoom-image:hover {
   transform: scale(1.05);
-}
+} */
 
 .image-thumbnails .img-thumbnail {
   transition: all 0.3s ease;
@@ -1575,12 +1576,12 @@ section.checkout-area {
 .hm-product-section .modal-content {
   background: white;
   padding: 20px;
-  border-radius: 12px;
-  width: 90%;
+  border-radius: 0;
+  width: 100%;
   max-width: 1011px;
   display: flex;
   flex-direction: column;
-  margin: 10px;
+  margin: 0;
   --bs-modal-width: 100% !important;
 }
 
@@ -1612,11 +1613,14 @@ section.checkout-area {
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
   .modal-content {
-    width: 95%;
-    margin: 5px;
+    width: 100%;
+    margin: 0px;
     padding: 15px;
-    max-height: 90vh;
+    max-height: 100%;
     overflow-y: auto;
+  }
+  .cart-modal-popup .modal-dialog .modal-header {
+    padding: 0;
   }
 
   .modal-body {
@@ -1961,6 +1965,21 @@ button:disabled {
 
 .add-to-cart-section {
   margin: 30px 0px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-to-cart-section button.btn-close {
+  height: 50px;
+  background: black;
+  width: 58px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  opacity: 1;
 }
 
 .quantity-buttons {

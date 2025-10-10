@@ -55,7 +55,7 @@
 
   .cart-modal-popup .modal-body {
     padding: 8px 10px;
-    padding-left: 28px;
+    padding-left: 10px;
   }
 
   .cart-items-area .cart-items-price h4 {
@@ -153,13 +153,25 @@
 }
 
 @media (max-width: 767px) {
+  ul.hm-category-list {
+    justify-content: start;
+    margin: 0;
+    border-radius: 0;
+  }
 
-     
-}
+  .hm-product-section .product-details {
+    padding-top: 15px;
+  }
 
+  .viewcart-area {
+    right: 0;
+    width: 96%;
+    left: 0;
+    margin: auto;
+  }
   .hm-product-section .modal {
     z-index: 99999;
-  } 
+  }
   .brand-logo a img {
     max-height: 52px;
   }
@@ -387,8 +399,6 @@
     width: 57px;
     height: 39px;
   }
-
-  
 
   .viewcart-area .cart-totalprice img {
     width: 30px;

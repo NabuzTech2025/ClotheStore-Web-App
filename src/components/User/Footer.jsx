@@ -20,9 +20,7 @@ const Footer = () => {
           to="/privacypolicy"
           target="_blank"
           className="text-black font-bold"
-        >
-          Impressum
-        </Link>
+        ></Link>
       )}
     </footer>
   );

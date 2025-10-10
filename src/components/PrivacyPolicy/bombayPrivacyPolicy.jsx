@@ -789,7 +789,7 @@ const BombayPrivacyPolicy = () => {
               dieses Formular aus und senden Sie es zurück.)
             </p>
             <div className="space-y-3 text-gray-700">
-              <p>An Bombay Heimservice, Verdistr. 103, 81247 München:</p>
+              {/* <p>An Bombay Heimservice, Verdistr. 103, 81247 München:</p> */}
               <p>
                 Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*)
                 abgeschlossenen Vertrag über den Kauf der folgenden Waren

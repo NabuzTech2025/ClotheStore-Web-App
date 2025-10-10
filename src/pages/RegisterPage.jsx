@@ -233,8 +233,8 @@ const RegisterPage = () => {
                   <p>
                     <button type="submit" disabled={loading}>
                       {loading
-                        ? currentLanguage.loading || "Please wait..."
-                        : currentLanguage.view_cart || "Submit"}
+                        ? "Please wait..."
+                        :  "Continue"}
                     </button>
                   </p>
                   <p style={{ textAlign: "center", marginTop: "15px" }}>

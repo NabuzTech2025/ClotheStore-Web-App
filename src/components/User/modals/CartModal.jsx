@@ -1271,26 +1271,26 @@ const CartModal = () => {
               </div>
             )} */}
 
-             <button
-                  type="button"
-                  className="btn-close"
-                  onClick={handleCloseModal}
-                  aria-label="Close"
-                >
-                  <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <polyline points="10 14 4 8 10 2"></polyline>
-                      </svg>
-                </button>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={handleCloseModal}
+              aria-label="Close"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="10 14 4 8 10 2"></polyline>
+              </svg>
+            </button>
             <div
               className="cart-area-footer"
               style={{
@@ -1338,7 +1338,8 @@ const CartModal = () => {
                   color: "white",
                 }}
               >
-                {currentLanguage.view_cart}{" "}
+                {/* {currentLanguage.view_cart}{" "} */}
+                Continue
                 <img
                   src={`assets/user/img/right-blk-arrow.svg`}
                   alt="Order"

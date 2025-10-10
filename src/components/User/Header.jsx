@@ -11,7 +11,7 @@ import {
 import { useCart } from "../../contexts/CartContext";
 import { useViewport } from "../../contexts/ViewportContext";
 import { payload_url } from "../../utils/common_urls";
-import brandLogo from "../../../public/assets/user/img/brand-logo.png";
+import brandLogo from "../../../public/assets/user/img/brand-logo.svg";
 import userLogo from "../../../public/assets/user/img/login-icon.svg";
 import { useStoreStatus } from "../../contexts/StoreStatusContext";
 

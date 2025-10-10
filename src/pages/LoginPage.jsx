@@ -166,7 +166,7 @@ import {
   payload_url,
   registerLink,
 } from "../utils/common_urls";
-import brandLogo from "../../public/assets/user/img/brand-logo.png";
+import brandLogo from "../../public/assets/user/img/brand-logo.svg";
 import "../../ui/css/login_Page.css";
 
 const LoginPage = () => {
@@ -281,7 +281,7 @@ const LoginPage = () => {
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     <p>
                       <button type="submit" disabled={loading}>
-                        {loading ? "Logging in..." : currentLanguage.view_cart}
+                        {loading ? "Logging in..." : "Continue"}
                       </button>
                     </p>
                   </form>

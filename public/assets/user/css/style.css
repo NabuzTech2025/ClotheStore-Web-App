@@ -398,6 +398,11 @@ ul.hm-category-list li a {
   min-width: 80px;
 }
 
+ul.hm-category-list li a:hover {
+  color: white;
+  background: #624ba1;
+}
+
 ul.hm-category-list li a h6 {
   font-size: 14px;
   text-align: center;
@@ -864,7 +869,7 @@ ul.cart-content-header li.price-col h5 {
 
 .cart-modal-popup .modal-footer {
   justify-content: left;
-  padding: 0 0 127px 0;
+  padding: 0 0 84px 0;
 }
 
 .cart-modal-popup .modal-footer .cart-area-total {

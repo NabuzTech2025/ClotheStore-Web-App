@@ -190,9 +190,7 @@ const GuestAddressPage = () => {
                     />
                   </p> */}
                   <p>
-                    <button type="submit">
-                      {currentLanguage.view_cart || "Submit"}
-                    </button>
+                    <button type="submit">Continue</button>
                   </p>
                   <p style={{ textAlign: "center", marginTop: "15px" }}>
                     {currentLanguage.already_have_account}{" "}

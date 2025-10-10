@@ -603,6 +603,7 @@ form.delivery-address-form button.btn-address-submit:focus {
   bottom: 30px;
   right: 87px;
   opacity: 0;
+  min-width: 375px;
 }
 
 .viewcart-area-active {
@@ -905,6 +906,10 @@ ul.cart-content-header li.price-col h5 {
   border-radius: 10px;
 }
 
+.placeorder-cart .cart-area-footer {
+  width: 100%;
+}
+
 .cart-area-footer .cart-totalprice {
   display: flex;
   justify-content: start;
@@ -947,6 +952,26 @@ ul.cart-content-header li.price-col h5 {
   width: 100%;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  display: inline-flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
+.placeorder-cart .btn-close {
+  background-color: black;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  border-radius: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+  opacity: 1;
 }
 
 .placeorder-cart .placeorder-location {

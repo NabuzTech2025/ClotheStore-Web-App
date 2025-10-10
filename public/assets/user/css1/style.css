@@ -893,6 +893,9 @@ ul.cart-content-header li.price-col h5 {
   width: 100%;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  display: inline-flex;
+  justify-content: start;
+  align-items: center;
 }
 
 .placeorder-cart .placeorder-location {

@@ -3,9 +3,11 @@ import { useCart } from "../../../contexts/CartContext";
 import { currentCurrency } from "../../../utils/helper/currency_type";
 import { currentLanguage } from "../../../utils/helper/lang_translate";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { useViewport } from "../../../contexts/ViewportContext";
 
 const ProductDetailModal = ({ product, isOpen, onClose }) => {
   const { addToCart, cartItems } = useCart();
+  const { isMobileViewport } = useViewport();
   const [quantity, setQuantity] = useState(1);
   const [lensPosition, setLensPosition] = useState({
     x: 0,
@@ -89,7 +91,7 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                       borderRadius: "8px",
                       cursor: "zoom-in",
                     }}
-                    onMouseMove={(e) => {
+                    onMouseMove={!isMobileViewport ? (e) => {
                       const rect = e.currentTarget.getBoundingClientRect();
                       const x = e.clientX - rect.left;
                       const y = e.clientY - rect.top;
@@ -119,8 +121,8 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                         const yPercent = (y / rect.height) * 100;
                         zoomedView.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
                       }
-                    }}
-                    onTouchMove={(e) => {
+                    } : undefined}
+                    onTouchMove={!isMobileViewport ? (e) => {
                       const rect = e.currentTarget.getBoundingClientRect();
                       const touch = e.touches[0];
                       const x = touch.clientX - rect.left;
@@ -151,8 +153,8 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                         const yPercent = (y / rect.height) * 100;
                         zoomedView.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
                       }
-                    }}
-                    onMouseEnter={() => {
+                    } : undefined}
+                    onMouseEnter={!isMobileViewport ? () => {
                       setIsHovering(true);
                       const zoomedView = document.getElementById("zoomed-view");
                       if (zoomedView) {
@@ -165,8 +167,8 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                       if (productDetails) {
                         productDetails.style.display = "none";
                       }
-                    }}
-                    onTouchStart={() => {
+                    } : undefined}
+                    onTouchStart={!isMobileViewport ? () => {
                       setIsHovering(true);
                       const zoomedView = document.getElementById("zoomed-view");
                       if (zoomedView) {
@@ -179,8 +181,8 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                       if (productDetails) {
                         productDetails.style.display = "none";
                       }
-                    }}
-                    onMouseLeave={() => {
+                    } : undefined}
+                    onMouseLeave={!isMobileViewport ? () => {
                       setIsHovering(false);
                       const zoomedView = document.getElementById("zoomed-view");
                       if (zoomedView) {
@@ -194,8 +196,8 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                       if (productDetails) {
                         productDetails.style.display = "block";
                       }
-                    }}
-                    onTouchEnd={() => {
+                    } : undefined}
+                    onTouchEnd={!isMobileViewport ? () => {
                       setIsHovering(false);
                       const zoomedView = document.getElementById("zoomed-view");
                       if (zoomedView) {
@@ -209,7 +211,7 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                       if (productDetails) {
                         productDetails.style.display = "block";
                       }
-                    }}
+                    } : undefined}
                   />
 
                   {/* Blue Transparent Dotted Lens */}

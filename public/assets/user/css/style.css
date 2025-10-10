@@ -397,6 +397,10 @@ ul.hm-category-list li a {
   padding: 8px 16px;
   min-width: 80px;
 }
+ul.hm-category-list li a.active {
+  background: #624ba1;
+  color: white;
+}
 
 ul.hm-category-list li a:hover {
   color: white;

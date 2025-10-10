@@ -131,7 +131,7 @@ const ProductCategory = ({
   return (
     <ul
       ref={categoryListRef}
-      className="sidebar hm-category-list"
+      className="sidebar hm-category-list active"
       style={{
         // Only add height for mobile, don't interfere with existing styles
         ...(isMobileViewport && {

@@ -393,7 +393,7 @@ ul.hm-category-list li a {
   font-weight: bold;
   position: relative;
   transition: 0.3s ease-in-out;
-  border: 1px solid black;
+  border: 1px solid rgb(98, 75, 161);
   padding: 8px 16px;
   min-width: 80px;
 }

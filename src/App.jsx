@@ -55,6 +55,7 @@ import GuestAddressPage from "./pages/GuestAddressPage";
 import { StoreStatusProvider } from "./contexts/StoreStatusContext";
 import { currentCurrency } from "./utils/helper/currency_type";
 import { PAYPAL_CLIENT_ID } from "./utils/common_urls";
+import { CacheBuster } from "./components/CacheBuster";
 
 const initialOptions = {
   "client-id": PAYPAL_CLIENT_ID,
@@ -68,108 +69,112 @@ const APP_BASE_ROUTE = import.meta.env.VITE_APP_BASE_ROUTE || "";
 function App() {
   return (
     // <React.StrictMode>
-    <CommonContextProvider>
-      <PayPalScriptProvider options={initialOptions}>
-        <ViewportProvider>
-          <Provider store={store}>
-            <AuthProvider>
-              <StoreStatusProvider>
-                <CartProvider>
-                  <BrowserRouter basename={`/${APP_BASE_ROUTE}`}>
-                    <TitleUpdater />
-                    <DisableZoom />
-                    <Suspense fallback={<Suspense_Loader />}>
-                      <Routes>
-                        {/* Auth Routes */}
-                        <Route path="/admin" element={<AdminLogin />} />
-                        <Route
-                          path="/login/:nextpage?"
-                          element={<LoginPage />}
-                        />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route
-                          path="/guest-login"
-                          element={<GuestAddressPage />}
-                        />
-                        <Route
-                          path="/forgot-password"
-                          element={<ForgotPassword />}
-                        />
-                        <Route
-                          path="/reset-password"
-                          element={<ResetPassword />}
-                        />
-
-                        <Route path="/support" element={<SupportPage />} />
-                        <Route
-                          path="/privacypolicy"
-                          element={<PrivacypolicyPage />}
-                        />
-
-                        {/* Front end routes */}
-                        <Route path="/" element={<Restaurant />} />
-
-                        {/* User-protected routes */}
-                        <Route element={<UserRoute />}>
-                          <Route path="/checkout" element={<CheckoutPage />} />
+    <CacheBuster>
+      <CommonContextProvider>
+        <PayPalScriptProvider options={initialOptions}>
+          <ViewportProvider>
+            <Provider store={store}>
+              <AuthProvider>
+                <StoreStatusProvider>
+                  <CartProvider>
+                    <BrowserRouter basename={`/${APP_BASE_ROUTE}`}>
+                      <TitleUpdater />
+                      <DisableZoom />
+                      <Suspense fallback={<Suspense_Loader />}>
+                        <Routes>
+                          {/* Auth Routes */}
+                          <Route path="/admin" element={<AdminLogin />} />
                           <Route
-                            path="/update-address"
-                            element={<UserAddress />}
+                            path="/login/:nextpage?"
+                            element={<LoginPage />}
                           />
-                        </Route>
+                          <Route path="/register" element={<RegisterPage />} />
+                          <Route
+                            path="/guest-login"
+                            element={<GuestAddressPage />}
+                          />
+                          <Route
+                            path="/forgot-password"
+                            element={<ForgotPassword />}
+                          />
+                          <Route
+                            path="/reset-password"
+                            element={<ResetPassword />}
+                          />
 
-                        {/* Admin-protected routes */}
-                        <Route element={<AdminRoute />}>
-                          <Route path="/admin" element={<AdminLayout />}>
-                            <Route path="home" element={<Dashboard />} />
-                            <Route path="category" element={<Category />} />
+                          <Route path="/support" element={<SupportPage />} />
+                          <Route
+                            path="/privacypolicy"
+                            element={<PrivacypolicyPage />}
+                          />
+
+                          {/* Front end routes */}
+                          <Route path="/" element={<Restaurant />} />
+
+                          {/* User-protected routes */}
+                          <Route element={<UserRoute />}>
                             <Route
-                              path="category-list"
-                              element={<CategoryList />}
-                            />
-                            <Route path="products" element={<Products />} />
-                            <Route
-                              path="products-list"
-                              element={<ProductsList />}
-                            />
-                            <Route path="tax" element={<TaxListPage />} />
-                            <Route
-                              path="store-setting"
-                              element={<StoreHoursListPage />}
+                              path="/checkout"
+                              element={<CheckoutPage />}
                             />
                             <Route
-                              path="disscount"
-                              element={<DisscountPage />}
-                            />
-                            <Route
-                              path="/admin/toppings"
-                              element={<ToppingListPage />}
-                            />
-                            <Route
-                              path="/admin/topping-groups"
-                              element={<ToppingGroupsListPage />}
-                            />
-                            <Route
-                              path="/admin/group-item"
-                              element={<GroupsItemListPage />}
-                            />
-                            <Route
-                              path="/admin/product-groups"
-                              element={<ProductGroupsPage />}
+                              path="/update-address"
+                              element={<UserAddress />}
                             />
                           </Route>
-                        </Route>
-                      </Routes>
-                    </Suspense>
-                  </BrowserRouter>
-                </CartProvider>
-              </StoreStatusProvider>
-            </AuthProvider>
-          </Provider>
-        </ViewportProvider>
-      </PayPalScriptProvider>
-    </CommonContextProvider>
 
+                          {/* Admin-protected routes */}
+                          <Route element={<AdminRoute />}>
+                            <Route path="/admin" element={<AdminLayout />}>
+                              <Route path="home" element={<Dashboard />} />
+                              <Route path="category" element={<Category />} />
+                              <Route
+                                path="category-list"
+                                element={<CategoryList />}
+                              />
+                              <Route path="products" element={<Products />} />
+                              <Route
+                                path="products-list"
+                                element={<ProductsList />}
+                              />
+                              <Route path="tax" element={<TaxListPage />} />
+                              <Route
+                                path="store-setting"
+                                element={<StoreHoursListPage />}
+                              />
+                              <Route
+                                path="disscount"
+                                element={<DisscountPage />}
+                              />
+                              <Route
+                                path="/admin/toppings"
+                                element={<ToppingListPage />}
+                              />
+                              <Route
+                                path="/admin/topping-groups"
+                                element={<ToppingGroupsListPage />}
+                              />
+                              <Route
+                                path="/admin/group-item"
+                                element={<GroupsItemListPage />}
+                              />
+                              <Route
+                                path="/admin/product-groups"
+                                element={<ProductGroupsPage />}
+                              />
+                            </Route>
+                          </Route>
+                        </Routes>
+                      </Suspense>
+                    </BrowserRouter>
+                  </CartProvider>
+                </StoreStatusProvider>
+              </AuthProvider>
+            </Provider>
+          </ViewportProvider>
+        </PayPalScriptProvider>
+      </CommonContextProvider>
+    </CacheBuster>
     // </React.StrictMode>
   );
 }

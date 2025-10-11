@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "generate-build-version": "node generate-build-version.js",
+    "prebuild": "npm run generate-build-version",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

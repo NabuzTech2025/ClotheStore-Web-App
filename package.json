@@ -1,12 +1,10 @@
 {
   "name": "food-order-app",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "generate-build-version": "node generate-build-version.js",
-    "prebuild": "npm run generate-build-version",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

@@ -25,7 +25,7 @@ jobs:
           echo "image_tag=rrfootballshirts" >> $GITHUB_OUTPUT
           echo "server_ip=138.199.144.4" >> $GITHUB_OUTPUT
           echo "port=3006" >> $GITHUB_OUTPUT
-          echo "VITE_APP_NAME=rrfootballshirts" >> $GITHUB_ENV
+          echo "VITE_APP_NAME=RR Foot ball shirts" >> $GITHUB_ENV
           echo "VITE_STORE_ID=16" >> $GITHUB_ENV
           echo "VITE_APP_BASE_URL=https://rrfootballshirts.com" >> $GITHUB_ENV
           echo "VITE_APP_COPYRIGHT_TEXT=Copyright © RR Football Shirts" >> $GITHUB_ENV

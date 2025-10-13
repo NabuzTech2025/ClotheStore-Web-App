@@ -2,9 +2,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const APP_NAME = `${capitalize(
-  import.meta.env.VITE_APP_NAME || ""
-)} Restaurant`;
+const APP_NAME = `${capitalize(import.meta.env.VITE_APP_NAME || "")}`;
 
 const routeTitles = {
   "/": "",

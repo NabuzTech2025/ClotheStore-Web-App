@@ -142,7 +142,6 @@ const Hero = () => {
     const fetchDiscounts = async () => {
       try {
         const response = await getStoreDisscount();
-        console.log("Discount Data: =-->", response);
 
         if (response.data && Array.isArray(response.data)) {
           const discountData = {

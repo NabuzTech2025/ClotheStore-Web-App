@@ -1,53 +1,22 @@
-// export default ProductItem;
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useCart } from "../../contexts/CartContext";
-import {
-  getCurrentLanguage,
-  getTranslations,
-  formatCurrency,
-} from "../../utils/helper/lang_translate";
 import ProductDetailModal from "./modals/ProductDetailModal";
 
 const ProductItem = ({ product }) => {
-  const { cartItems, addToCart, setSelectedProduct, setShowVariantModal } =
-    useCart();
+  const { cartItems } = useCart();
 
-  const imageBaseUrl = import.meta.env.VITE_IMAGE_BASE_URL || "";
-
-  const [selectedVariant, setSelectedVariant] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
-  const lang = getCurrentLanguage();
-  const translations = getTranslations(lang);
-
-  useEffect(() => {
-    if (product.type === "variable" && product.variants.length) {
-      setSelectedVariant(product.variants[0]);
-    }
-  }, [product]);
-
-  // ✅ Quantity calculation
+  // ✅ Quantity calculation - show total quantity for this product
   const quantity = cartItems
-    .filter((item) => {
-      if (item.id !== product.id) return false;
-      if (product.type === "simple") return true;
-      return item.selectedVariant?.id === selectedVariant?.id;
-    })
+    .filter((item) => item.id === product.id)
     .reduce((sum, item) => sum + item.quantity, 0);
 
   const handleProductClick = () => {
-    if (product.enriched_topping_groups.length > 0) {
-      setSelectedProduct(product);
-      setShowVariantModal(true);
-    } else {
-      // Use original product price
-      addToCart(product, selectedVariant ? selectedVariant.id : null, 1, []);
-    }
-  };
-
-  const handleProductDetailClick = () => {
+    // Open product detail modal instead of adding to cart directly
     setShowDetailModal(true);
   };
+
 
   return (
     <div className="col">
@@ -55,7 +24,7 @@ const ProductItem = ({ product }) => {
         {/* Product image */}
         <div
           className="prdct-img"
-          onClick={handleProductDetailClick}
+          onClick={handleProductClick}
           style={{ cursor: "pointer" }}
         >
           <img
@@ -80,7 +49,11 @@ const ProductItem = ({ product }) => {
             <h5>£{product.price}</h5>
           ) : (
             <div className="variant-select">
-              {/* Variants UI agar hai to yaha handle hoga */}
+              {product.variants && product.variants.length > 0 ? (
+                <h5>£{product.variants[0].price}</h5>
+              ) : (
+                <h5>£{product.price}</h5>
+              )}
             </div>
           )}
 

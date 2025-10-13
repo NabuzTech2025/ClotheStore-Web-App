@@ -119,7 +119,7 @@ const StoreStatusSkeleton = ({ loding, hours }) => {
       </div>
 
       {/* Add MIUI shimmer keyframes */}
-      <style jsx>{`
+      <style jsx="true">{`
         @keyframes shimmer {
           100% {
             transform: translateX(100%);
@@ -152,7 +152,7 @@ const StoreStatusLoadingBadge = () => {
         className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/60 to-transparent"
         style={{ animation: "shimmer 2s infinite" }}
       ></div>
-      <style jsx>{`
+      <style jsx="true">{`
         @keyframes shimmer {
           100% {
             transform: translateX(100%);

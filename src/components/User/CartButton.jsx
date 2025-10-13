@@ -75,21 +75,7 @@ const CartButton = () => {
 
   const handleShowCart = (e) => {
     e.preventDefault();
-    // const fetchUser = async () => {
-    //   try {
-    //     await getUserMe();
-    //   } catch (error) {
-    //     handleForceLogout();
-    //   }
-    // };
-    // fetchUser();
 
-    if (!isOpen) {
-      alert("Store is currently closed. You cannot place an order now.");
-      return;
-    }
-
-    // Postcode check removed - open cart modal directly
     openCartModal();
   };
 
@@ -128,9 +114,9 @@ const CartButton = () => {
             href="#"
             onClick={handleShowCart}
             style={{
-              pointerEvents: isOpen ? "auto" : "none",
-              opacity: isOpen ? 1 : 0.5,
-              cursor: isOpen ? "pointer" : "not-allowed",
+              pointerEvents: "auto",
+              opacity: 1,
+              cursor: "pointer",
             }}
           >
             {currentLanguage.view_cart}{" "}

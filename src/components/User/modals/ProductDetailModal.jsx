@@ -9,12 +9,39 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
   const { addToCart, cartItems } = useCart();
   const { isMobileViewport } = useViewport();
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [lensPosition, setLensPosition] = useState({
     x: 0,
     y: 0,
     visible: false,
   });
   const [isHovering, setIsHovering] = useState(false);
+
+  // Use actual variants from API only - no static prices
+  const availableSizes =
+    product.variants && product.variants.length > 0
+      ? product.variants.map((variant) => ({
+          id: variant.id,
+          name: variant.name,
+          price: variant.price,
+        }))
+      : [];
+
+  // Set first size as selected by default if not already selected
+  React.useEffect(() => {
+    if (availableSizes.length > 0 && !selectedSize) {
+      setSelectedSize(availableSizes[0].name);
+    }
+  }, [availableSizes]);
+
+  // Get current price based on selected size from API variants
+  const getCurrentPrice = () => {
+    if (selectedSize && availableSizes.length > 0) {
+      const variant = availableSizes.find((v) => v.name === selectedSize);
+      return variant ? variant.price : product.price;
+    }
+    return product.price;
+  };
 
   if (!isOpen || !product) return null;
 
@@ -23,22 +50,32 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
   };
 
   const handleAddToCart = () => {
-    console.log("ProductDetailModal - Product being added:", product);
-    console.log("ProductDetailModal - Quantity:", quantity);
-    console.log("ProductDetailModal - Calling addToCart with:", {
-      product,
-      variant: null,
-      quantity,
-      extras: [],
-    });
+    if (availableSizes.length > 0 && !selectedSize) {
+      alert("Please select a size before adding to cart");
+      return;
+    }
 
-    // Pass the converted price to cart (same as ProductItem)
+    // Find the selected size object with price
+    const selectedSizeObj = availableSizes.find(
+      (size) => size.name === selectedSize
+    );
+
+    // Create variant object for cart
+    const variant = selectedSize
+      ? {
+          id: selectedSizeObj.id,
+          name: selectedSize,
+          price: selectedSizeObj?.price || product.price,
+        }
+      : null;
+
+    // Pass the converted price to cart
     const productWithConvertedPrice = {
       ...product,
-      convertedPrice: product.price, // Use the price that's displayed in modal
+      convertedPrice: getCurrentPrice(),
     };
 
-    addToCart(productWithConvertedPrice, null, quantity, []);
+    addToCart(productWithConvertedPrice, variant, quantity, []);
     onClose();
   };
 
@@ -50,6 +87,7 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
   };
 
   console.log("ProductDetailModal - Product:", product);
+  console.log("ProductDetailModal - Available Sizes:", availableSizes);
 
   // Since backend sends single image URL as string
   const productImage =
@@ -87,131 +125,163 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                     style={{
                       width: "100%",
                       height: "400px",
-                      objectFit: "cover",
+                      objectFit: "unset",
                       borderRadius: "8px",
                       cursor: "zoom-in",
                     }}
-                    onMouseMove={!isMobileViewport ? (e) => {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      const x = e.clientX - rect.left;
-                      const y = e.clientY - rect.top;
+                    onMouseMove={
+                      !isMobileViewport
+                        ? (e) => {
+                            const rect =
+                              e.currentTarget.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
 
-                      // Constrain lens within image bounds
-                      const lensSize = 100;
-                      const constrainedX = Math.max(
-                        0,
-                        Math.min(x - lensSize / 2, rect.width - lensSize)
-                      );
-                      const constrainedY = Math.max(
-                        0,
-                        Math.min(y - lensSize / 2, rect.height - lensSize)
-                      );
+                            // Constrain lens within image bounds
+                            const lensSize = 100;
+                            const constrainedX = Math.max(
+                              0,
+                              Math.min(x - lensSize / 2, rect.width - lensSize)
+                            );
+                            const constrainedY = Math.max(
+                              0,
+                              Math.min(y - lensSize / 2, rect.height - lensSize)
+                            );
 
-                      // Update lens position
-                      setLensPosition({
-                        x: constrainedX,
-                        y: constrainedY,
-                        visible: true,
-                      });
+                            // Update lens position
+                            setLensPosition({
+                              x: constrainedX,
+                              y: constrainedY,
+                              visible: true,
+                            });
 
-                      // Update zoomed view with live tracking
-                      const zoomedView = document.getElementById("zoomed-view");
-                      if (zoomedView) {
-                        const xPercent = (x / rect.width) * 100;
-                        const yPercent = (y / rect.height) * 100;
-                        zoomedView.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
-                      }
-                    } : undefined}
-                    onTouchMove={!isMobileViewport ? (e) => {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      const touch = e.touches[0];
-                      const x = touch.clientX - rect.left;
-                      const y = touch.clientY - rect.top;
+                            // Update zoomed view with live tracking
+                            const zoomedView =
+                              document.getElementById("zoomed-view");
+                            if (zoomedView) {
+                              const xPercent = (x / rect.width) * 100;
+                              const yPercent = (y / rect.height) * 100;
+                              zoomedView.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+                            }
+                          }
+                        : undefined
+                    }
+                    onTouchMove={
+                      !isMobileViewport
+                        ? (e) => {
+                            const rect =
+                              e.currentTarget.getBoundingClientRect();
+                            const touch = e.touches[0];
+                            const x = touch.clientX - rect.left;
+                            const y = touch.clientY - rect.top;
 
-                      // Constrain lens within image bounds
-                      const lensSize = 100;
-                      const constrainedX = Math.max(
-                        0,
-                        Math.min(x - lensSize / 2, rect.width - lensSize)
-                      );
-                      const constrainedY = Math.max(
-                        0,
-                        Math.min(y - lensSize / 2, rect.height - lensSize)
-                      );
+                            // Constrain lens within image bounds
+                            const lensSize = 100;
+                            const constrainedX = Math.max(
+                              0,
+                              Math.min(x - lensSize / 2, rect.width - lensSize)
+                            );
+                            const constrainedY = Math.max(
+                              0,
+                              Math.min(y - lensSize / 2, rect.height - lensSize)
+                            );
 
-                      // Update lens position
-                      setLensPosition({
-                        x: constrainedX,
-                        y: constrainedY,
-                        visible: true,
-                      });
+                            // Update lens position
+                            setLensPosition({
+                              x: constrainedX,
+                              y: constrainedY,
+                              visible: true,
+                            });
 
-                      // Update zoomed view with live tracking
-                      const zoomedView = document.getElementById("zoomed-view");
-                      if (zoomedView) {
-                        const xPercent = (x / rect.width) * 100;
-                        const yPercent = (y / rect.height) * 100;
-                        zoomedView.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
-                      }
-                    } : undefined}
-                    onMouseEnter={!isMobileViewport ? () => {
-                      setIsHovering(true);
-                      const zoomedView = document.getElementById("zoomed-view");
-                      if (zoomedView) {
-                        zoomedView.style.display = "block";
-                        zoomedView.style.opacity = "1";
-                      }
-                      // Hide text content during tracking
-                      const productDetails =
-                        document.getElementById("product-details");
-                      if (productDetails) {
-                        productDetails.style.display = "none";
-                      }
-                    } : undefined}
-                    onTouchStart={!isMobileViewport ? () => {
-                      setIsHovering(true);
-                      const zoomedView = document.getElementById("zoomed-view");
-                      if (zoomedView) {
-                        zoomedView.style.display = "block";
-                        zoomedView.style.opacity = "1";
-                      }
-                      // Hide text content during tracking
-                      const productDetails =
-                        document.getElementById("product-details");
-                      if (productDetails) {
-                        productDetails.style.display = "none";
-                      }
-                    } : undefined}
-                    onMouseLeave={!isMobileViewport ? () => {
-                      setIsHovering(false);
-                      const zoomedView = document.getElementById("zoomed-view");
-                      if (zoomedView) {
-                        zoomedView.style.display = "none";
-                        zoomedView.style.opacity = "0";
-                      }
-                      setLensPosition({ x: 0, y: 0, visible: false });
-                      // Show text content again
-                      const productDetails =
-                        document.getElementById("product-details");
-                      if (productDetails) {
-                        productDetails.style.display = "block";
-                      }
-                    } : undefined}
-                    onTouchEnd={!isMobileViewport ? () => {
-                      setIsHovering(false);
-                      const zoomedView = document.getElementById("zoomed-view");
-                      if (zoomedView) {
-                        zoomedView.style.display = "none";
-                        zoomedView.style.opacity = "0";
-                      }
-                      setLensPosition({ x: 0, y: 0, visible: false });
-                      // Show text content again
-                      const productDetails =
-                        document.getElementById("product-details");
-                      if (productDetails) {
-                        productDetails.style.display = "block";
-                      }
-                    } : undefined}
+                            // Update zoomed view with live tracking
+                            const zoomedView =
+                              document.getElementById("zoomed-view");
+                            if (zoomedView) {
+                              const xPercent = (x / rect.width) * 100;
+                              const yPercent = (y / rect.height) * 100;
+                              zoomedView.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+                            }
+                          }
+                        : undefined
+                    }
+                    onMouseEnter={
+                      !isMobileViewport
+                        ? () => {
+                            setIsHovering(true);
+                            const zoomedView =
+                              document.getElementById("zoomed-view");
+                            if (zoomedView) {
+                              zoomedView.style.display = "block";
+                              zoomedView.style.opacity = "1";
+                            }
+                            // Hide text content during tracking
+                            const productDetails =
+                              document.getElementById("product-details");
+                            if (productDetails) {
+                              productDetails.style.display = "none";
+                            }
+                          }
+                        : undefined
+                    }
+                    onTouchStart={
+                      !isMobileViewport
+                        ? () => {
+                            setIsHovering(true);
+                            const zoomedView =
+                              document.getElementById("zoomed-view");
+                            if (zoomedView) {
+                              zoomedView.style.display = "block";
+                              zoomedView.style.opacity = "1";
+                            }
+                            // Hide text content during tracking
+                            const productDetails =
+                              document.getElementById("product-details");
+                            if (productDetails) {
+                              productDetails.style.display = "none";
+                            }
+                          }
+                        : undefined
+                    }
+                    onMouseLeave={
+                      !isMobileViewport
+                        ? () => {
+                            setIsHovering(false);
+                            const zoomedView =
+                              document.getElementById("zoomed-view");
+                            if (zoomedView) {
+                              zoomedView.style.display = "none";
+                              zoomedView.style.opacity = "0";
+                            }
+                            setLensPosition({ x: 0, y: 0, visible: false });
+                            // Show text content again
+                            const productDetails =
+                              document.getElementById("product-details");
+                            if (productDetails) {
+                              productDetails.style.display = "block";
+                            }
+                          }
+                        : undefined
+                    }
+                    onTouchEnd={
+                      !isMobileViewport
+                        ? () => {
+                            setIsHovering(false);
+                            const zoomedView =
+                              document.getElementById("zoomed-view");
+                            if (zoomedView) {
+                              zoomedView.style.display = "none";
+                              zoomedView.style.opacity = "0";
+                            }
+                            setLensPosition({ x: 0, y: 0, visible: false });
+                            // Show text content again
+                            const productDetails =
+                              document.getElementById("product-details");
+                            if (productDetails) {
+                              productDetails.style.display = "block";
+                            }
+                          }
+                        : undefined
+                    }
                   />
 
                   {/* Blue Transparent Dotted Lens */}
@@ -276,7 +346,7 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                         color: "#624ba1",
                       }}
                     >
-                      {format(product.price * quantity)}
+                      {format(getCurrentPrice() * quantity)}
                     </span>
                   </div>
 
@@ -287,6 +357,26 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                         "No description available for this product."}
                     </p>
                   </div>
+
+                  {/* Size Selection - Only show if variants exist */}
+                  {availableSizes.length > 0 && (
+                    <div className="size-selection">
+                      <h6>Size:</h6>
+                      <div className="size-options">
+                        {availableSizes.map((variant) => (
+                          <button
+                            key={variant.name}
+                            className={`size-option ${
+                              selectedSize === variant.name ? "selected" : ""
+                            }`}
+                            onClick={() => setSelectedSize(variant.name)}
+                          >
+                            {variant.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Quantity Selector */}
                   <div className="quantity-selector ">

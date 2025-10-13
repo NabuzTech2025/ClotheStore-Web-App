@@ -58,7 +58,7 @@ const UserAddress = () => {
             line1: first.line1,
             area: first.area || "",
             city: first.city || "",
-            // zip: order_type === "delivery" ? storedPostcode : "00000", // Postcode field removed
+            zip: "00000", // Postcode field removed
             country: first.country,
             phone: first.phone,
             customer_name: first.customer_name,
@@ -97,7 +97,7 @@ const UserAddress = () => {
         type: "shipping",
         line1: formData.line1,
         city: formData.city,
-        // zip: formData.zip, // Postcode field removed
+        zip: formData.zip, // Postcode field removed
         country: formData.country,
         phone: formData.phone,
         user_id: user.id,

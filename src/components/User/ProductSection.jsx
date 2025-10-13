@@ -17,8 +17,8 @@ const ProductSection = ({ products, loading = false, loadingMore = false }) => {
   return (
     <>
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3">
-        {products.map((product) => (
-          <div className="col mb-4" key={`prod-${product.id}`}>
+        {products.map((product, index) => (
+          <div className="col mb-4" key={`prod-${product.id}-${index}`}>
             <ProductItem product={product} />
           </div>
         ))}

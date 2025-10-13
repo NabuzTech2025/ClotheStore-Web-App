@@ -191,6 +191,8 @@ const CheckoutPage = () => {
       },
     };
 
+    console.log("Body ======>", body);
+
     try {
       let resp;
       if (isGuestLogin === "true") {

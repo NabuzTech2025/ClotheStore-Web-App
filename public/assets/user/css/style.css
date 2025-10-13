@@ -2019,3 +2019,68 @@ button:disabled {
 .quantity-buttons {
   margin: 10px 0px;
 }
+/* Size Selection Styles for ProductDetailModal */
+.size-selection {
+  margin: 20px 0;
+}
+
+.size-label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.size-options {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.size-option {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  background: white;
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.size-option:hover {
+  border-color:rgb(98, 75, 161);
+  color: rgb(98, 75, 161);
+}
+
+.size-option.selected {
+  border-color:rgb(98, 75, 161);
+  background-color:rgb(98, 75, 161);
+  color: white;
+}
+
+.size-chart-link {
+  color: rgb(98, 75, 161);
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s ease;
+}
+
+.size-chart-link:hover {
+  color: rgb(98, 75, 161);
+  text-decoration: underline;
+}
+
+.size-chart-icon {
+  font-size: 12px;
+}

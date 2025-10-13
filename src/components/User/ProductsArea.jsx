@@ -68,6 +68,7 @@ const ProductsArea = ({ searchTerm }) => {
     const seen = new Set();
     return products.filter((product) => {
       if (seen.has(product.id)) {
+        console.warn(`Duplicate product found: ${product.id} - ${product.name}`);
         return false;
       }
       seen.add(product.id);
@@ -113,6 +114,18 @@ const ProductsArea = ({ searchTerm }) => {
 
       const data = await response.json();
       const products = Array.isArray(data) ? data : [];
+      
+      // Remove duplicates immediately after API call
+      const uniqueProducts = removeDuplicateProducts(products);
+      
+      // Debug: Log the API response structure
+      console.log("API Response for category", categoryId, ":", data);
+      console.log(`Original products: ${products.length}, Unique products: ${uniqueProducts.length}`);
+      if (uniqueProducts.length > 0) {
+        console.log("Sample product structure:", uniqueProducts[0]);
+        console.log("Product variants:", uniqueProducts[0].variants);
+        console.log("Product price:", uniqueProducts[0].price);
+      }
 
       // Create meta information
       const meta = {
@@ -122,11 +135,11 @@ const ProductsArea = ({ searchTerm }) => {
       };
 
       // Cache the results
-      localStorage.setItem(cacheKey, JSON.stringify(products));
+      localStorage.setItem(cacheKey, JSON.stringify(uniqueProducts));
       localStorage.setItem(cacheTimeKey, Date.now().toString());
       localStorage.setItem(metaCacheKey, JSON.stringify(meta));
 
-      return { products, meta };
+      return { products: uniqueProducts, meta };
     } catch (error) {
       console.error(
         `Error loading products for category ${categoryId}:`,

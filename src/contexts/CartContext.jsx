@@ -24,7 +24,20 @@ export const CartProvider = ({ children }) => {
       .map((extra) => `${extra.id}:${extra.quantity || 1}`)
       .sort()
       .join("|");
-    return `${productId}-${variantId || "base"}-${extrasKey}`;
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substr(2, 9);
+    const uniqueKey = `${productId}-${
+      variantId || "base"
+    }-${extrasKey}-${timestamp}-${random}`;
+    console.log(
+      "Generated unique key:",
+      uniqueKey,
+      "for product:",
+      productId,
+      "variant:",
+      variantId
+    );
+    return uniqueKey;
   };
 
   // Load cart items from localStorage on first render
@@ -34,9 +47,9 @@ export const CartProvider = ({ children }) => {
     if (storedCart) {
       try {
         const parsedCart = JSON.parse(storedCart);
-        // Ensure each item has a unique key
+        // Ensure each item has a unique key and remove duplicates
         const cartWithKeys = Array.isArray(parsedCart)
-          ? parsedCart.map((item) => ({
+          ? parsedCart.map((item, index) => ({
               ...item,
               uniqueKey:
                 item.uniqueKey ||
@@ -44,10 +57,36 @@ export const CartProvider = ({ children }) => {
                   item.id,
                   item.selectedVariant?.id,
                   item.extras
-                ),
+                ) + `-${index}`, // Add index to ensure uniqueness
             }))
           : [];
-        setCartItems(cartWithKeys);
+
+        // Remove duplicates based on product ID and variant
+        const uniqueCart = cartWithKeys.reduce((acc, item) => {
+          const existingItem = acc.find(
+            (existing) =>
+              existing.id === item.id &&
+              (existing.selectedVariant?.id || null) ===
+                (item.selectedVariant?.id || null)
+          );
+
+          if (existingItem) {
+            // Merge quantities
+            existingItem.quantity += item.quantity;
+            console.log(
+              "Merged duplicate cart item:",
+              item.name,
+              "new quantity:",
+              existingItem.quantity
+            );
+          } else {
+            acc.push(item);
+          }
+          return acc;
+        }, []);
+
+        setCartItems(uniqueCart);
+        console.log("Loaded cart items:", uniqueCart.length, "items");
       } catch (e) {
         setCartItems([]);
       }
@@ -101,13 +140,13 @@ export const CartProvider = ({ children }) => {
   }, []);
 
   const addToCart = (product, variant = null, quantity = 1, extras = []) => {
-    console.log("addToCart called with:", { 
-      product: product?.name, 
-      variant, 
-      quantity, 
-      extras: extras?.length || 0 
+    console.log("addToCart called with:", {
+      product: product?.name,
+      variant,
+      quantity,
+      extras: extras?.length || 0,
     });
-    
+
     // Validate product and price
     if (!product || !product.id) {
       console.error("Invalid product:", product);
@@ -116,56 +155,90 @@ export const CartProvider = ({ children }) => {
 
     const productPrice = parseFloat(product.price) || 0;
     const variantPrice = variant ? parseFloat(variant.price) || 0 : 0;
-    
+
     console.log("Price calculation:", { productPrice, variantPrice });
-    
+    console.log("Variant data:", variant);
+
     if (productPrice <= 0 && variantPrice <= 0) {
       console.error("Invalid price:", { productPrice, variantPrice });
+      console.log("Product data:", product);
       return;
     }
 
     const uniqueKey = generateCartItemKey(product.id, variant?.id, extras);
+    console.log("addToCart - Generated uniqueKey:", uniqueKey);
+    console.log(
+      "addToCart - Existing cart items:",
+      cartItems.map((item) => ({
+        id: item.id,
+        uniqueKey: item.uniqueKey,
+        name: item.name,
+      }))
+    );
 
     // First check if an identical item already exists
     const existingItem = findExistingItemByKey(uniqueKey);
+    console.log("addToCart - Found existing item:", existingItem);
 
     if (existingItem) {
       // Update existing item instead of adding new one
+      console.log("addToCart - Updating existing item with key:", uniqueKey);
       updateItemWithExtrasByKey(uniqueKey, quantity);
     } else {
-      // Add new item with unique key
-      setCartItems((prevItems) => {
-        // Use the converted price that's displayed in UI
-        const finalPrice = variant ? variantPrice : productPrice;
-        console.log("Final price calculation:", { variant, variantPrice, productPrice, finalPrice });
-        
-        // If product has a converted price, use that instead
-        const convertedPrice = product.convertedPrice || product.displayPrice || finalPrice;
-        console.log("Using converted price:", convertedPrice);
-        const itemToAdd = {
-          ...product,
-          uniqueKey,
-          quantity,
-          price: convertedPrice, // Use converted price
-          extras: extras.map((extra) => ({
-            ...extra,
-            quantity: extra.quantity || 1,
-          })),
-          basePrice: convertedPrice,
-          tax: product.tax?.percentage || 0,
-          selectedVariant: variant,
-          displayName: variant
-            ? `${product.name} (${variant.name})`
-            : product.name,
-          displayPrice: convertedPrice, // Use converted price for display
-        };
-        
-        console.log("Item being added with displayPrice:", finalPrice);
-        
-        console.log("Item being added to cart:", itemToAdd);
+      // Check if there's already an item with same product and variant (but different extras)
+      const similarItem = cartItems.find(
+        (item) =>
+          item.id === product.id &&
+          (item.selectedVariant?.id || null) === (variant?.id || null)
+      );
 
-        return [...prevItems, itemToAdd];
-      });
+      if (similarItem) {
+        console.log(
+          "addToCart - Found similar item, updating quantity:",
+          similarItem.uniqueKey
+        );
+        updateItemWithExtrasByKey(similarItem.uniqueKey, quantity);
+      } else {
+        // Add new item with unique key
+        setCartItems((prevItems) => {
+          // Use the converted price that's displayed in UI
+          const finalPrice = variant ? variantPrice : productPrice;
+          console.log("Final price calculation:", {
+            variant,
+            variantPrice,
+            productPrice,
+            finalPrice,
+          });
+
+          // If product has a converted price, use that instead
+          const convertedPrice =
+            product.convertedPrice || product.displayPrice || finalPrice;
+          console.log("Using converted price:", convertedPrice);
+          const itemToAdd = {
+            ...product,
+            uniqueKey,
+            quantity,
+            price: convertedPrice, // Use converted price
+            extras: extras.map((extra) => ({
+              ...extra,
+              quantity: extra.quantity || 1,
+            })),
+            basePrice: convertedPrice,
+            tax: product.tax?.percentage || 0,
+            selectedVariant: variant,
+            displayName: variant
+              ? `${product.name} (${variant.name})`
+              : product.name,
+            displayPrice: convertedPrice, // Use converted price for display
+          };
+
+          console.log("Item being added with displayPrice:", finalPrice);
+
+          console.log("Item being added to cart:", itemToAdd);
+
+          return [...prevItems, itemToAdd];
+        });
+      }
     }
   };
 
@@ -335,23 +408,13 @@ export const CartProvider = ({ children }) => {
       // Validate and calculate main product price
       const displayPrice = parseFloat(item.displayPrice) || 0;
       const mainProductTotal = displayPrice * item.quantity;
-      
-      console.log("Cart item calculation:", {
-        item: item.name,
-        displayPrice,
-        quantity: item.quantity,
-        mainProductTotal
-      });
 
       // Calculate extras total using their individual quantities
       const extrasTotal =
-        item.extras?.reduce(
-          (tSum, topping) => {
-            const toppingPrice = parseFloat(topping.price) || 0;
-            return tSum + toppingPrice * (topping.quantity || 1);
-          },
-          0
-        ) || 0;
+        item.extras?.reduce((tSum, topping) => {
+          const toppingPrice = parseFloat(topping.price) || 0;
+          return tSum + toppingPrice * (topping.quantity || 1);
+        }, 0) || 0;
 
       return sum + mainProductTotal + extrasTotal * item.quantity;
     }, 0),

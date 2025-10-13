@@ -26,8 +26,8 @@ const Restaurant = () => {
       className="restaurant-page"
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-      {/* <StoreStatusProvider> */}
-      <CartProvider>
+      <StoreStatusProvider>
+        <CartProvider>
         <Header
           onAddressClick={() => setShowAddressModal(true)}
           onLoginClick={() => setShowLoginModal(true)}
@@ -66,8 +66,8 @@ const Restaurant = () => {
         />
         <VariantModal />
         <ScrollToTopButton />
-      </CartProvider>
-      {/* </StoreStatusProvider> */}
+        </CartProvider>
+      </StoreStatusProvider>
     </div>
   );
 };

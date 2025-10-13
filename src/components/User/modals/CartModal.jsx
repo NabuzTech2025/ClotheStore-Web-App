@@ -1072,7 +1072,7 @@ const CartModal = () => {
                                 />
                               </a>
                             </div>
-                            {!isMobileViewport &&
+                            {/* {!isMobileViewport &&
                               (item.type !== "simple" ||
                                 (item.extras && item.extras.length > 0)) && (
                                 <a
@@ -1096,7 +1096,7 @@ const CartModal = () => {
                                 >
                                   {currentLanguage.edit}
                                 </a>
-                              )}
+                              )} */}
 
                             <div className="cart-item-text">
                               <h6>{item.name}</h6>
@@ -1295,11 +1295,11 @@ const CartModal = () => {
               className="cart-area-footer"
               style={{
                 backgroundColor:
-                  !isOpen || (min_order_amount > 0 && orderType === "delivery")
+                  min_order_amount > 0 && orderType === "delivery"
                     ? "#cfcecc"
                     : "#624BA1",
                 cursor:
-                  !isOpen || (min_order_amount > 0 && orderType === "delivery")
+                  min_order_amount > 0 && orderType === "delivery"
                     ? "not-allowed"
                     : "pointer",
               }}
@@ -1322,17 +1322,12 @@ const CartModal = () => {
 
               <a
                 onClick={() => {
-                  if (
-                    !isOpen ||
-                    (orderType === "delivery" && min_order_amount > 0)
-                  )
-                    return;
+                  if (orderType === "delivery" && min_order_amount > 0) return;
                   handleCheckout();
                 }}
                 style={{
                   cursor:
-                    !isOpen ||
-                    (orderType === "delivery" && min_order_amount > 0)
+                    orderType === "delivery" && min_order_amount > 0
                       ? "not-allowed"
                       : "pointer",
                   color: "white",

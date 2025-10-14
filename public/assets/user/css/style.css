@@ -1542,14 +1542,6 @@ section.checkout-area {
   background-color: #f9f6ff;
 }
 
-.prdct-img img {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  width: 238px;
-  height: 413px;
-  object-fit: cover;
-}
-
 /* Product Detail Modal Styles */
 .product-zoom-image {
   transition: transform 0.3s ease;

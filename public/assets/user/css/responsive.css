@@ -358,11 +358,11 @@
     line-height: 20px;
   }
 
-  .prdct-img img {
+  /* .prdct-img img {
     width: 238px;
     height: 413px;
     object-fit: cover;
-  }
+  } */
 
   ul.hm-category-list li {
     margin-bottom: 0px;
@@ -470,11 +470,6 @@
     margin-right: 20px;
   }
 
-  .row.row-cols-md-3 .col {
-    width: 33.33%;
-    padding: 0 5px;
-  }
-
   .store-title-col h1 {
     font-size: 22px;
     line-height: 30px;
@@ -494,10 +489,6 @@
     margin-left: -15px;
     margin-right: -15px;
     width: calc(100% + 30px);
-  }
-
-  ul.hm-category-list li a {
-    height: 90px;
   }
 
   ul.hm-category-list li a img {

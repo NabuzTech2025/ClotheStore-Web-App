@@ -49,6 +49,39 @@ const CheckoutPage = () => {
   const currentLanguage = getTranslations(language);
   const format = (amount) => formatCurrencySync(amount, language);
 
+  // Add this useEffect near the top of your component, after your state declarations
+  useEffect(() => {
+    // Check immediately on mount if this was a refresh
+    const isRefreshing = sessionStorage.getItem("isRefreshing");
+    const orderPlaced = sessionStorage.getItem("order_placed");
+
+    if (isRefreshing === "true" && orderPlaced === "true") {
+      // Clear the flags
+      sessionStorage.removeItem("isRefreshing");
+      sessionStorage.removeItem("order_placed");
+
+      // Navigate with reload
+      const payload_url = import.meta.env.VITE_PAYLOAD_URL || "/";
+      window.location.href = payload_url;
+      return; // Exit early
+    } else if (isRefreshing === "true") {
+      // If refreshed but order not placed, just clear the refresh flag
+      sessionStorage.removeItem("isRefreshing");
+    }
+
+    // Set the flag for next refresh
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem("isRefreshing", "true");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   useEffect(() => {
     const storedCart = localStorage.getItem("cartItems");
     if (storedCart) {
@@ -142,6 +175,7 @@ const CheckoutPage = () => {
 
   const handlePlaceOrder = async () => {
     setPlacing(true);
+    sessionStorage.setItem("order_placed", "true");
     const orderNote = localStorage.getItem("orderNote") || "";
     const guest_address = JSON.parse(
       getItemfromSessionStorage({ tokenName: "guestShippingAddress" })
@@ -190,8 +224,6 @@ const CheckoutPage = () => {
       },
     };
 
-    console.log("Body ======>", body);
-
     try {
       let resp;
       if (isGuestLogin === "true") {
@@ -221,11 +253,11 @@ const CheckoutPage = () => {
         style={{ paddingBottom: isMobileViewport ? "100px" : "0" }}
       >
         <div className="container" style={{ maxWidth: "1170px" }}>
-          <div className="row">
-            <div className="col-lg-6 col-sm-6 col-12">
-              {orderSuccess ? (
-                <OrderSuccess orderId={orderId} />
-              ) : (
+          {orderSuccess ? (
+            <OrderSuccess orderId={orderId} />
+          ) : (
+            <div className="row">
+              <div className="col-lg-6 col-sm-6 col-12">
                 <PaymentMethodSelector
                   onPaymentMethodChange={(method) => setPaymentMethod(method)}
                   handlePlaceOrder={handlePlaceOrder}
@@ -233,194 +265,194 @@ const CheckoutPage = () => {
                   placing={placing}
                   orderSuccess={orderSuccess}
                 />
-              )}
-            </div>
-            <div className="col-lg-2 d-lg-block d-sm-none"></div>
-            <div className="col-lg-4 col-sm-6 col-12">
-              <div className="checkout-cart-area">
-                <div
-                  className="checkout-cart-header"
-                  onClick={() =>
-                    orderType === "delivery" && setShowAddressModal(true)
-                  }
-                  style={{
-                    cursor: orderType === "delivery" ? "pointer" : "default",
-                  }}
-                >
-                  <span>
-                    <img
-                      src={`assets/user/img/${
-                        orderType === "pickup" || postcode === ""
-                          ? ""
-                          : "delivery-icon.svg"
-                      }`}
-                      alt="Delivery"
-                      style={{
-                        display:
+              </div>
+              <div className="col-lg-2 d-lg-block d-sm-none"></div>
+              <div className="col-lg-4 col-sm-6 col-12">
+                <div className="checkout-cart-area">
+                  <div
+                    className="checkout-cart-header"
+                    onClick={() =>
+                      orderType === "delivery" && setShowAddressModal(true)
+                    }
+                    style={{
+                      cursor: orderType === "delivery" ? "pointer" : "default",
+                    }}
+                  >
+                    <span>
+                      <img
+                        src={`assets/user/img/${
                           orderType === "pickup" || postcode === ""
-                            ? "none"
-                            : "block",
-                      }}
-                    />
-                  </span>
-                  <h5></h5>
-                </div>
+                            ? ""
+                            : "delivery-icon.svg"
+                        }`}
+                        alt="Delivery"
+                        style={{
+                          display:
+                            orderType === "pickup" || postcode === ""
+                              ? "none"
+                              : "block",
+                        }}
+                      />
+                    </span>
+                    <h5></h5>
+                  </div>
 
-                <div
-                  className="checkout-cart-item-area"
-                  style={{
-                    maxHeight: isMobileViewport ? "50vh" : "none",
-                    overflowY: isMobileViewport ? "auto" : "visible",
-                  }}
-                >
-                  <ul className="cart-content-header">
-                    <li className="items-col">
-                      <h5>{currentLanguage.items || "Items"}</h5>
-                    </li>
-                    <li className="qty-col">
-                      <h5>{currentLanguage.qty || "Qty"}</h5>
-                    </li>
-                    <li className="price-col">
-                      <h5>{currentLanguage.price || "Price"}</h5>
-                    </li>
-                  </ul>
+                  <div
+                    className="checkout-cart-item-area"
+                    style={{
+                      maxHeight: isMobileViewport ? "50vh" : "none",
+                      overflowY: isMobileViewport ? "auto" : "visible",
+                    }}
+                  >
+                    <ul className="cart-content-header">
+                      <li className="items-col">
+                        <h5>{currentLanguage.items || "Items"}</h5>
+                      </li>
+                      <li className="qty-col">
+                        <h5>{currentLanguage.qty || "Qty"}</h5>
+                      </li>
+                      <li className="price-col">
+                        <h5>{currentLanguage.price || "Price"}</h5>
+                      </li>
+                    </ul>
 
-                  {cartItems.map((item) => {
-                    const toppingsTotal =
-                      item.extras?.reduce(
-                        (sum, t) => sum + (t.price || 0) * (t.quantity || 1),
-                        0
-                      ) || 0;
-                    const totalPrice =
-                      (item.displayPrice + toppingsTotal) * item.quantity;
+                    {cartItems.map((item) => {
+                      const toppingsTotal =
+                        item.extras?.reduce(
+                          (sum, t) => sum + (t.price || 0) * (t.quantity || 1),
+                          0
+                        ) || 0;
+                      const totalPrice =
+                        (item.displayPrice + toppingsTotal) * item.quantity;
 
-                    return (
-                      <div
-                        className="cart-items-area"
-                        key={getCartItemKey(item)}
-                      >
-                        <div className="cart-item-col">
-                          <div className="cart-item-text">
-                            <h6>{item.name}</h6>
+                      return (
+                        <div
+                          className="cart-items-area"
+                          key={getCartItemKey(item)}
+                        >
+                          <div className="cart-item-col">
+                            <div className="cart-item-text">
+                              <h6>{item.name}</h6>
 
-                            {/* Display selected variant if exists */}
-                            {item.selectedVariant && (
-                              <span
-                                style={{
-                                  display: "block",
-                                  fontSize: "13px",
-                                  color: "#666",
-                                  marginBottom: "4px",
-                                  marginTop: "2px",
-                                }}
-                              >
-                                Size: {item.selectedVariant.name} -{" "}
-                                {format(item.displayPrice)}
-                              </span>
-                            )}
+                              {/* Display selected variant if exists */}
+                              {item.selectedVariant && (
+                                <span
+                                  style={{
+                                    display: "block",
+                                    fontSize: "13px",
+                                    color: "#666",
+                                    marginBottom: "4px",
+                                    marginTop: "2px",
+                                  }}
+                                >
+                                  Size: {item.selectedVariant.name} -{" "}
+                                  {format(item.displayPrice)}
+                                </span>
+                              )}
 
-                            {/* Display extras/toppings */}
-                            {item.extras?.length > 0 &&
-                              item.extras.map((t, i) => (
-                                <div key={t.id || i}>
-                                  <span
-                                    style={{
-                                      fontSize: "12px",
-                                      color: "#888",
-                                    }}
-                                  >
-                                    + {t.quantity} × {t.name} [
-                                    {format(t.price * t.quantity)}]
-                                  </span>
-                                </div>
-                              ))}
+                              {/* Display extras/toppings */}
+                              {item.extras?.length > 0 &&
+                                item.extras.map((t, i) => (
+                                  <div key={t.id || i}>
+                                    <span
+                                      style={{
+                                        fontSize: "12px",
+                                        color: "#888",
+                                      }}
+                                    >
+                                      + {t.quantity} × {t.name} [
+                                      {format(t.price * t.quantity)}]
+                                    </span>
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                          <div className="cart-items-counter">
+                            <div className="cart-counter-text">
+                              <qty>{item.quantity}</qty>
+                            </div>
+                          </div>
+                          <div className="cart-items-price">
+                            <h4>{format(totalPrice)}</h4>
                           </div>
                         </div>
-                        <div className="cart-items-counter">
-                          <div className="cart-counter-text">
-                            <qty>{item.quantity}</qty>
-                          </div>
-                        </div>
-                        <div className="cart-items-price">
-                          <h4>{format(totalPrice)}</h4>
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
+
+                  {/* Desktop Totals */}
+                  <div
+                    className={`cehckout-area-total ${
+                      isMobileViewport ? "d-none" : "d-block"
+                    }`}
+                  >
+                    <ul>
+                      <li>
+                        <h6>{currentLanguage.subtotal}</h6>
+                        <span>{format(subtotal)}</span>
+                      </li>
+                      {discountAmount > 0 && (
+                        <li>
+                          <h6>
+                            {currentLanguage.discount}{" "}
+                            <label>
+                              {currentLanguage.saved} {discountPercent}%
+                            </label>
+                          </h6>
+                          <span>{format(discountAmount)}</span>
+                        </li>
+                      )}
+                      {deliveryFee > 0 && orderType === "delivery" && (
+                        <li>
+                          <h6>{currentLanguage.delivery_charges}</h6>
+                          <span>{format(deliveryFee)}</span>
+                        </li>
+                      )}
+                      <li>
+                        <h6>{currentLanguage.total}</h6>
+                        <span>{format(grandTotal)}</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
 
-                {/* Desktop Totals */}
+                {/* Desktop Button */}
                 <div
-                  className={`cehckout-area-total ${
+                  className={`checkout-pay-button mt-3 ${
                     isMobileViewport ? "d-none" : "d-block"
                   }`}
                 >
-                  <ul>
-                    <li>
-                      <h6>{currentLanguage.subtotal}</h6>
-                      <span>{format(subtotal)}</span>
-                    </li>
-                    {discountAmount > 0 && (
-                      <li>
-                        <h6>
-                          {currentLanguage.discount}{" "}
-                          <label>
-                            {currentLanguage.saved} {discountPercent}%
-                          </label>
-                        </h6>
-                        <span>{format(discountAmount)}</span>
-                      </li>
+                  <button
+                    className="btn pay-button"
+                    onClick={handlePlaceOrder}
+                    disabled={
+                      placing || orderSuccess || paymentMethod === "online"
+                    }
+                  >
+                    {placing ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        {currentLanguage.processing}...
+                      </>
+                    ) : paymentMethod === "online" ? (
+                      currentLanguage.pay_now || "Pay Now"
+                    ) : (
+                      currentLanguage.place_order || "Place Order"
                     )}
-                    {deliveryFee > 0 && orderType === "delivery" && (
-                      <li>
-                        <h6>{currentLanguage.delivery_charges}</h6>
-                        <span>{format(deliveryFee)}</span>
-                      </li>
-                    )}
-                    <li>
-                      <h6>{currentLanguage.total}</h6>
-                      <span>{format(grandTotal)}</span>
-                    </li>
-                  </ul>
+                  </button>
                 </div>
               </div>
-
-              {/* Desktop Button */}
-              <div
-                className={`checkout-pay-button mt-3 ${
-                  isMobileViewport ? "d-none" : "d-block"
-                }`}
-              >
-                <button
-                  className="btn pay-button"
-                  onClick={handlePlaceOrder}
-                  disabled={
-                    placing || orderSuccess || paymentMethod === "online"
-                  }
-                >
-                  {placing ? (
-                    <>
-                      <span
-                        className="spinner-border spinner-border-sm me-2"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      {currentLanguage.processing}...
-                    </>
-                  ) : paymentMethod === "online" ? (
-                    currentLanguage.pay_now || "Pay Now"
-                  ) : (
-                    currentLanguage.place_order || "Place Order"
-                  )}
-                </button>
-              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
       {/* Mobile Floating Totals and Button */}
-      {isMobileViewport && (
+      {isMobileViewport && !orderSuccess && (
         <div
           className="position-fixed w-100 d-block d-lg-none"
           style={{

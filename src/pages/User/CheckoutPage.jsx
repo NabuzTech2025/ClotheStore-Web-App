@@ -59,6 +59,7 @@ const CheckoutPage = () => {
       // Clear the flags
       sessionStorage.removeItem("isRefreshing");
       sessionStorage.removeItem("order_placed");
+      localStorage.removeItem("cartItems");
 
       // Navigate with reload
       const payload_url = import.meta.env.VITE_PAYLOAD_URL || "/";

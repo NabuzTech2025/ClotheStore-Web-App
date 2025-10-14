@@ -715,7 +715,6 @@ import EditCartModel from "@/components/User/modals/EditCartModel";
 import { useStoreStatus } from "@/contexts/StoreStatusContext";
 import { useAuth } from "@/auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
-// --- UPDATE: Use dynamic language and currency ---
 import {
   getTranslations,
   getCurrentLanguage,
@@ -726,9 +725,6 @@ import {
   useViewport,
   ViewportProvider,
 } from "../../../contexts/ViewportContext";
-// --- REMOVE: currentLanguage and currentCurrency imports ---
-// import { currentLanguage } from "../../../utils/helper/lang_translate";
-// import { currentCurrency } from "../../../utils/helper/currency_type";
 import AddNoteModal from "./AddNote";
 
 const CartModal = () => {
@@ -747,7 +743,7 @@ const CartModal = () => {
   } = useCart();
 
   const [discountPercent, setDiscountPercent] = useState(0);
-  const [deliveryFee, setDeliveryFee] = useState(3);
+  const [deliveryFee, setDeliveryFee] = useState(5);
   const [orderType, setOrderType] = useState("delivery");
   const [postcode, setPostcode] = useState("");
   const [showAddressModal, setShowAddressModal] = useState(false);
@@ -766,11 +762,9 @@ const CartModal = () => {
     modal = window.bootstrap.Modal.getOrCreateInstance(modalElement);
   }
 
-  // --- UPDATE: Get current language and translation object ---
   const language = getCurrentLanguage();
   const currentLanguage = getTranslations(language);
 
-  // --- UPDATE: Currency formatting helper ---
   const format = (amount) => formatCurrencySync(amount, language);
 
   // Clean up modal backdrop when component unmounts
@@ -797,8 +791,7 @@ const CartModal = () => {
         setDeliveryFee(0);
       } else {
         setPostcode(localStorage.getItem("delivery_postcode") || "");
-        // setDeliveryFee(parseFloat(localStorage.getItem("delivery_fee")) || 0);
-        setDeliveryFee(3);
+        setDeliveryFee(5);
       }
     };
 
@@ -828,14 +821,12 @@ const CartModal = () => {
 
   const handlePostcodeSelect = (data) => {
     setPostcode(data.postcode);
-    // setDeliveryFee(data.delivery_fee);
-    setDeliveryFee(3);
+    setDeliveryFee(5);
     localStorage.setItem("delivery_postcode", data.postcode);
     localStorage.setItem("delivery_fee", data.delivery_fee.toString());
   };
 
   const getCartItemKey = (item) => {
-    // Use the uniqueKey if available, otherwise generate one
     return (
       item.uniqueKey ||
       generateCartItemKey(item.id, item.selectedVariant?.id, item.extras)
@@ -843,7 +834,6 @@ const CartModal = () => {
   };
 
   const handleCheckout = () => {
-    // Clean up modal before navigation
     const backdrops = document.querySelectorAll(".modal-backdrop");
     backdrops.forEach((backdrop) => backdrop.remove());
     document.body.classList.remove("modal-open");
@@ -854,7 +844,6 @@ const CartModal = () => {
       return;
     }
 
-    // Postcode check removed - navigate directly to checkout
     navigate("/update-address", {
       state: {
         orderType,
@@ -865,14 +854,12 @@ const CartModal = () => {
   };
 
   const handleCloseModal = () => {
-    // Programmatically hide the Bootstrap modal
     const modal = bootstrap.Modal.getInstance(
       document.getElementById("cartModal")
     );
     if (modal) {
       modal.hide();
     }
-    // Clean up backdrop
     const backdrops = document.querySelectorAll(".modal-backdrop");
     backdrops.forEach((backdrop) => backdrop.remove());
     document.body.classList.remove("modal-open");
@@ -897,7 +884,6 @@ const CartModal = () => {
   const handleNoteModalClose = () => {
     setShowNoteModal(false);
     setShowCartButton(true);
-    // Show the cart modal again
     if (modal) {
       modal.show();
     }
@@ -933,32 +919,8 @@ const CartModal = () => {
                 justifyContent: "space-between",
               }}
             >
-              {/* Left side - postcode info commented out */}
-              <div style={{ flex: 1 }}>
-                {/* Postcode display commented out
-                {orderType === "delivery" && (
-                  <div className="cart-postcode-col">
-                    <div className="postcode-icon">
-                      <img
-                        src={`assets/user/img/delivery-icon.svg`}
-                        alt="Delivery"
-                      />
-                    </div>
-                    <div className="header-postcode-cnt">
-                      <h3
-                        style={{
-                          fontSize: isMobileViewport ? "12px" : "16px",
-                        }}
-                      >
-                        {postcode}
-                      </h3>
-                      <i className="bi bi-chevron-down"></i>
-                    </div>
-                  </div>
-                )} */}
-              </div>
+              <div style={{ flex: 1 }}></div>
 
-              {/* Right side - buttons */}
               <div
                 style={{
                   display: "flex",
@@ -978,42 +940,6 @@ const CartModal = () => {
 
             <div className="modal-body">
               <div className="cart-content-area">
-                {/* Minimum order message commented out
-                {min_order_amount > 0 && orderType === "delivery" && (
-                  <div
-                    style={{
-                      marginBottom: "15px",
-                    }}
-                  >
-                    <img
-                      src="assets/images/shop_bag.png"
-                      alt=""
-                      style={{
-                        width: "13px",
-                        height: "15px",
-                        marginLeft: "0px",
-                        marginRight: "5px",
-                        marginBottom: "5px",
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontSize: isMobileViewport ? "10.5px" : "14px",
-                        color: "#303030",
-                      }}
-                    >
-                      Noch{" "}
-                      <span
-                        style={{
-                          color: "#E25454",
-                        }}
-                      >
-                        {format(min_order_amount)}
-                      </span>
-                      &nbsp; bis der Mindestbestellwert erreicht ist
-                    </span>
-                  </div>
-                )} */}
                 {cartItems.length > 0 ? (
                   <>
                     <ul className="cart-content-header">
@@ -1034,7 +960,6 @@ const CartModal = () => {
                           (sum, t) => sum + (t.price || 0) * (t.quantity || 1),
                           0
                         ) || 0;
-                      // Calculate main product total and extras total separately
                       const mainProductTotal =
                         item.displayPrice * item.quantity;
                       const totalPrice =
@@ -1072,45 +997,36 @@ const CartModal = () => {
                                 />
                               </a>
                             </div>
-                            {/* {!isMobileViewport &&
-                              (item.type !== "simple" ||
-                                (item.extras && item.extras.length > 0)) && (
-                                <a
-                                  href="/adria#"
-                                  className="text-decoration-underline text-primary cart-edit-text"
-                                  style={{
-                                    fontSize: "11px",
-                                    textAlign: "center",
-                                    marginTop: "40px",
-                                  }}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    const productWithExtras = {
-                                      ...item,
-                                      enriched_topping_groups:
-                                        item.enriched_topping_groups || [],
-                                    };
-                                    setSelectedProduct(productWithExtras);
-                                    setShowEditProductModal(true);
-                                  }}
-                                >
-                                  {currentLanguage.edit}
-                                </a>
-                              )} */}
 
                             <div className="cart-item-text">
                               <h6>{item.name}</h6>
-                              {/* <span>
-                                {item.quantity} ×{" "}
-                                {item.selectedVariant?.name || "Standard"} [
-                                {format(item.displayPrice)}]
-                              </span> */}
 
+                              {/* Display selected variant if exists */}
+                              {item.selectedVariant && (
+                                <span
+                                  style={{
+                                    display: "block",
+                                    fontSize: "13px",
+                                    color: "#666",
+                                    marginBottom: "4px",
+                                  }}
+                                >
+                                  Size: {item.selectedVariant.name} -{" "}
+                                  {format(item.displayPrice)}
+                                </span>
+                              )}
+
+                              {/* Display extras/toppings */}
                               {item.extras?.length > 0 &&
                                 item.extras.map((t, i) => (
                                   <div key={t.id || i}>
-                                    <span>
-                                      {t.quantity} × {t.name} [
+                                    <span
+                                      style={{
+                                        fontSize: "12px",
+                                        color: "#888",
+                                      }}
+                                    >
+                                      + {t.quantity} × {t.name} [
                                       {format(t.price * t.quantity)}]
                                     </span>
                                   </div>
@@ -1170,7 +1086,6 @@ const CartModal = () => {
                           <div className="cart-items-price">
                             <h4>{format(totalPrice)}</h4>
 
-                            {/* Mobile Edit Button - Positioned at bottom-right corner */}
                             {isMobileViewport &&
                               (item.type !== "simple" ||
                                 (item.extras && item.extras.length > 0)) && (
@@ -1194,9 +1109,7 @@ const CartModal = () => {
                                     setSelectedProduct(productWithExtras);
                                     setShowEditProductModal(true);
                                   }}
-                                >
-                                  {currentLanguage.edit}
-                                </a>
+                                ></a>
                               )}
                           </div>
                         </div>
@@ -1258,19 +1171,6 @@ const CartModal = () => {
 
         {cartItems.length > 0 && (
           <div className="placeorder-cart">
-            {/* Postcode display commented out
-            {orderType === "delivery" && (
-              <div className="placeorder-location">
-                <img src={`assets/user/img/location-icon.svg`} alt="Location" />
-                <h6>{postcode}</h6>
-                <a href="#" onClick={() => setShowAddressModal(true)}>
-                  {postcode
-                    ? currentLanguage.change_postcode
-                    : currentLanguage.postCode}
-                </a>
-              </div>
-            )} */}
-
             <button
               type="button"
               className="btn-close"
@@ -1333,7 +1233,6 @@ const CartModal = () => {
                   color: "white",
                 }}
               >
-                {/* {currentLanguage.view_cart}{" "} */}
                 Continue
                 <img
                   src={`assets/user/img/right-blk-arrow.svg`}

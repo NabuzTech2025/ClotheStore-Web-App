@@ -135,13 +135,11 @@ const GuestAddressPage = () => {
                       />
                     </p>
                     <p>
-                      <label>
-                        {currentLanguage.apartment || "Apartment / House No."} *
-                      </label>
+                      <label>{currentLanguage.Address || "Address"} *</label>
                       <input
                         type="text"
                         name="line1"
-                        placeholder="Apartment / House No."
+                        placeholder="Address"
                         value={guestShippingAddress.line1}
                         onChange={handleChange}
                         required

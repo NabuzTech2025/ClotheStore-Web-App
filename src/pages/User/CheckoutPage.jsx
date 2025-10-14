@@ -1,4 +1,3 @@
-// export default CheckoutPage;
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/auth/AuthProvider";
@@ -30,7 +29,7 @@ const CheckoutPage = () => {
   const [orderType, setOrderType] = useState("delivery");
   const [orderTypeCode, setOrderTypeCode] = useState(1);
   const [postcode, setPostcode] = useState("53604");
-  const [deliveryFee, setDeliveryFee] = useState(3);
+  const [deliveryFee, setDeliveryFee] = useState(5);
   const [discountPercent, setDiscountPercent] = useState(0);
   const [discountId, setDiscountId] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("cash");
@@ -95,7 +94,7 @@ const CheckoutPage = () => {
       const pc = localStorage.getItem("delivery_postcode") || "";
       const df = parseFloat(localStorage.getItem("delivery_fee")) || 0;
       setPostcode(pc);
-      setDeliveryFee(3);
+      setDeliveryFee(5);
     }
   }, []);
 
@@ -264,18 +263,7 @@ const CheckoutPage = () => {
                       }}
                     />
                   </span>
-                  <h5>
-                    {/* Postcode display commented out
-                    {orderType !== "pickup" && postcode !== "" && (
-                      <h3>
-                        {postcode}
-                        <em>
-                          {addresses?.line1} {addresses?.city}{" "}
-                          {addresses?.country}
-                        </em>
-                      </h3>
-                    )} */}
-                  </h5>
+                  <h5></h5>
                 </div>
 
                 <div
@@ -314,16 +302,34 @@ const CheckoutPage = () => {
                         <div className="cart-item-col">
                           <div className="cart-item-text">
                             <h6>{item.name}</h6>
-                            {/* <span>
-                              {item.quantity} ×{" "}
-                              {item.selectedVariant?.name || "Standard"} [
-                              {format(item.displayPrice)}]
-                            </span> */}
+
+                            {/* Display selected variant if exists */}
+                            {item.selectedVariant && (
+                              <span
+                                style={{
+                                  display: "block",
+                                  fontSize: "13px",
+                                  color: "#666",
+                                  marginBottom: "4px",
+                                  marginTop: "2px",
+                                }}
+                              >
+                                Size: {item.selectedVariant.name} -{" "}
+                                {format(item.displayPrice)}
+                              </span>
+                            )}
+
+                            {/* Display extras/toppings */}
                             {item.extras?.length > 0 &&
                               item.extras.map((t, i) => (
                                 <div key={t.id || i}>
-                                  <span>
-                                    {t.quantity} × {t.name} [
+                                  <span
+                                    style={{
+                                      fontSize: "12px",
+                                      color: "#888",
+                                    }}
+                                  >
+                                    + {t.quantity} × {t.name} [
                                     {format(t.price * t.quantity)}]
                                   </span>
                                 </div>
@@ -384,7 +390,6 @@ const CheckoutPage = () => {
                 className={`checkout-pay-button mt-3 ${
                   isMobileViewport ? "d-none" : "d-block"
                 }`}
-                style={{ display: "block" }} // Force show for debugging
               >
                 <button
                   className="btn pay-button"
@@ -460,7 +465,7 @@ const CheckoutPage = () => {
             </ul>
           </div>
 
-          <div className="checkout-pay-button p-3" style={{ display: "block" }}>
+          <div className="checkout-pay-button p-3">
             <button
               className="btn pay-button"
               onClick={handlePlaceOrder}

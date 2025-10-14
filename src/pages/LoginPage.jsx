@@ -166,7 +166,7 @@ import {
   payload_url,
   registerLink,
 } from "../utils/common_urls";
-import brandLogo from "../../public/assets/user/img/brand-logo.svg";
+import brandLogo from "../../public/assets/user/img/brand-logo.jpg";
 import "../../ui/css/login_Page.css";
 
 const LoginPage = () => {

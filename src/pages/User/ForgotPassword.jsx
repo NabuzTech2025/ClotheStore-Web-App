@@ -44,7 +44,7 @@ const ForgotPassword = () => {
                   <div className="lgin-header">
                     <img
                       className="img-fluid"
-                      src={`assets/user/img/brand-logo.svg`}
+                      src={`assets/user/img/brand-logo.jpg`}
                       alt="Brand Logo"
                     />
                     <h4>{currentLanguage.forgotPassword}</h4>

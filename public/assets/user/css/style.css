@@ -132,8 +132,12 @@ h6,
 /************ Header Style *****************/
 
 header#header {
-  padding: 10px 0;
+  padding: 5px 0;
   border-bottom: 1px solid #f1f1f1;
+}
+
+.header-left-area a img {
+  max-width: 90px;
 }
 
 .header-left-area {
@@ -2056,13 +2060,13 @@ button:disabled {
 }
 
 .size-option:hover {
-  border-color:rgb(98, 75, 161);
+  border-color: rgb(98, 75, 161);
   color: rgb(98, 75, 161);
 }
 
 .size-option.selected {
-  border-color:rgb(98, 75, 161);
-  background-color:rgb(98, 75, 161);
+  border-color: rgb(98, 75, 161);
+  background-color: rgb(98, 75, 161);
   color: white;
 }
 

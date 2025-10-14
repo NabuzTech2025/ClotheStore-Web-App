@@ -184,9 +184,7 @@ const RegisterPage = () => {
                     </span>
                   </h6>
                   <p>
-                    <label>
-                      {currentLanguage.apartment || "Apartment / House No."} *
-                    </label>
+                    <label>{currentLanguage.apartment || "Address"} *</label>
                     <input
                       type="text"
                       name="line1"
@@ -232,9 +230,7 @@ const RegisterPage = () => {
 
                   <p>
                     <button type="submit" disabled={loading}>
-                      {loading
-                        ? "Please wait..."
-                        :  "Continue"}
+                      {loading ? "Please wait..." : "Continue"}
                     </button>
                   </p>
                   <p style={{ textAlign: "center", marginTop: "15px" }}>

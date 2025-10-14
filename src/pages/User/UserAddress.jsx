@@ -194,18 +194,18 @@ const UserAddress = () => {
                     </p>
 
                     <p>
-                      <label>{currentLanguage.apartment || "Address"}*</label>
+                      <label>{currentLanguage.Addres || "Address"}*</label>
                       <input
                         type="text"
                         name="line1"
-                        placeholder="Wohnung / Haus-Nr"
+                        placeholder="Address"
                         value={formData.line1}
                         onChange={handleChange}
                         required
                       />
                     </p>
 
-                    {/* <p>
+                    <p>
                       <label>{currentLanguage.city || "City"} *</label>
                       <input
                         type="text"
@@ -215,9 +215,9 @@ const UserAddress = () => {
                         onChange={handleChange}
                         required
                       />
-                    </p> */}
+                    </p>
 
-                    {/* Postcode field commented out
+                    {/* Postcode field commented out */}
                     <p>
                       <label>{currentLanguage.postCode || "Postcode"} *</label>
                       <input
@@ -227,7 +227,7 @@ const UserAddress = () => {
                         required
                         disabled
                       />
-                    </p> */}
+                    </p>
 
                     {/* <p>
                       <label>{currentLanguage.country || "Country"} *</label>

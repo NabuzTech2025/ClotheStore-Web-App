@@ -123,11 +123,13 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                     alt={product.name}
                     className="img-fluid product-zoom-image"
                     style={{
-                      width: "100%",
+                      width: "auto",
                       height: "400px",
                       objectFit: "unset",
                       borderRadius: "8px",
                       cursor: "zoom-in",
+                      margin: "auto",
+                      display: "flex",
                     }}
                     onMouseMove={
                       !isMobileViewport

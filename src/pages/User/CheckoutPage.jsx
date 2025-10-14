@@ -49,6 +49,39 @@ const CheckoutPage = () => {
   const currentLanguage = getTranslations(language);
   const format = (amount) => formatCurrencySync(amount, language);
 
+  // Add this useEffect near the top of your component, after your state declarations
+  useEffect(() => {
+    // Check immediately on mount if this was a refresh
+    const isRefreshing = sessionStorage.getItem("isRefreshing");
+    const orderPlaced = sessionStorage.getItem("order_placed");
+
+    if (isRefreshing === "true" && orderPlaced === "true") {
+      // Clear the flags
+      sessionStorage.removeItem("isRefreshing");
+      sessionStorage.removeItem("order_placed");
+
+      // Navigate with reload
+      const payload_url = import.meta.env.VITE_PAYLOAD_URL || "/";
+      window.location.href = payload_url;
+      return; // Exit early
+    } else if (isRefreshing === "true") {
+      // If refreshed but order not placed, just clear the refresh flag
+      sessionStorage.removeItem("isRefreshing");
+    }
+
+    // Set the flag for next refresh
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem("isRefreshing", "true");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   useEffect(() => {
     const storedCart = localStorage.getItem("cartItems");
     if (storedCart) {
@@ -142,6 +175,7 @@ const CheckoutPage = () => {
 
   const handlePlaceOrder = async () => {
     setPlacing(true);
+    sessionStorage.setItem("order_placed", "true");
     const orderNote = localStorage.getItem("orderNote") || "";
     const guest_address = JSON.parse(
       getItemfromSessionStorage({ tokenName: "guestShippingAddress" })
@@ -189,8 +223,6 @@ const CheckoutPage = () => {
         amount: grandTotal,
       },
     };
-
-    console.log("Body ======>", body);
 
     try {
       let resp;

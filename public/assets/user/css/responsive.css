@@ -168,6 +168,7 @@
     width: 96%;
     left: 0;
     margin: auto;
+    min-width: auto;
   }
   .hm-product-section .modal {
     z-index: 99999;

@@ -55,6 +55,7 @@ import GuestAddressPage from "./pages/GuestAddressPage";
 import { StoreStatusProvider } from "./contexts/StoreStatusContext";
 import { currentCurrency } from "./utils/helper/currency_type";
 import { PAYPAL_CLIENT_ID } from "./utils/common_urls";
+import MobileZoomFix from "./components/MobileZoomFix";
 
 const initialOptions = {
   "client-id": PAYPAL_CLIENT_ID,
@@ -78,6 +79,7 @@ function App() {
                   <BrowserRouter basename={`/${APP_BASE_ROUTE}`}>
                     <TitleUpdater />
                     <DisableZoom />
+                    <MobileZoomFix />
                     <Suspense fallback={<Suspense_Loader />}>
                       <Routes>
                         {/* Auth Routes */}

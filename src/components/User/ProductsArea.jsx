@@ -61,7 +61,7 @@ const ProductsArea = ({ searchTerm }) => {
   const getMetaCacheKey = (categoryId) =>
     `products_meta_${APP_BASE_ROUTE}_${categoryId}`;
 
-  const CACHE_MAX_AGE = 1000 * 60 * 5; // 5 minutes
+  const CACHE_MAX_AGE = 1000 * 60 * 0; // 0 minutes
 
   // Helper function to remove duplicates based on product ID
   const removeDuplicateProducts = (products) => {

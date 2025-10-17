@@ -14,7 +14,7 @@ export const currencyConfig = {
   GERMANY: {
     name: "Germany",
     locale: "de-DE",
-    symbol: "€",
+    symbol: "£",
     currency: "EUR",
     show: true,
   },

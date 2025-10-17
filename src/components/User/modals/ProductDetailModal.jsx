@@ -100,7 +100,7 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
       <div className="modal-dialog modal-lg">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">{product.name}</h5>
+            {/* <h5 className="modal-title">{product.name}</h5> */}
             <button
               type="button"
               className="btn-close"
@@ -352,14 +352,6 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                     </span>
                   </div>
 
-                  <div className="product-description ">
-                    <h6>Description:</h6>
-                    <p className="text-muted">
-                      {product.description ||
-                        "No description available for this product."}
-                    </p>
-                  </div>
-
                   {/* Size Selection - Only show if variants exist */}
                   {availableSizes.length > 0 && (
                     <div className="size-selection">
@@ -455,6 +447,13 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                       />
                       Add to Cart
                     </button>
+                  </div>
+                  <div className="product-description ">
+                    <h6>Description:</h6>
+                    <p className="text-muted">
+                      {product.description ||
+                        "No description available for this product."}
+                    </p>
                   </div>
                 </div>
               </div>

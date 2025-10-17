@@ -406,7 +406,7 @@ const ToppingTable = ({ reload, onSuccess }) => {
       console.error("Currency formatting error:", error);
       // Fallback to simple formatting if currency conversion fails
       return currentLanguage === "en"
-        ? `€${parseFloat(priceValue).toFixed(2)}`
+        ? `£${parseFloat(priceValue).toFixed(2)}`
         : `$${parseFloat(priceValue).toFixed(2)}`;
     }
   };

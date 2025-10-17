@@ -68,7 +68,9 @@ const ProductsArea = ({ searchTerm }) => {
     const seen = new Set();
     return products.filter((product) => {
       if (seen.has(product.id)) {
-        console.warn(`Duplicate product found: ${product.id} - ${product.name}`);
+        console.warn(
+          `Duplicate product found: ${product.id} - ${product.name}`
+        );
         return false;
       }
       seen.add(product.id);
@@ -114,18 +116,9 @@ const ProductsArea = ({ searchTerm }) => {
 
       const data = await response.json();
       const products = Array.isArray(data) ? data : [];
-      
+
       // Remove duplicates immediately after API call
-      const uniqueProducts = removeDuplicateProducts(activeProducts);
-      console.log(`🔄 After removing duplicates: ${uniqueProducts.length}`);
-      
-      if (uniqueProducts.length > 0) {
-        console.log("📦 Sample product structure:", uniqueProducts[0]);
-        console.log("💰 Product price:", uniqueProducts[0].price);
-        console.log("🏷️ Product name:", uniqueProducts[0].name);
-      } else {
-        console.log("⚠️ No products found for category:", categoryId);
-      }
+      const uniqueProducts = removeDuplicateProducts(products);
 
       // Create meta information
       const meta = {
@@ -145,7 +138,6 @@ const ProductsArea = ({ searchTerm }) => {
         `❌ Error loading products for category ${categoryId}:`,
         error
       );
-      console.log(`🔧 API URL that failed: https://magskr.com/products/limitbycat/${ITEMS_PER_PAGE}?offset=${offset}&store_id=${STORE_ID}&category_id=${categoryId}`);
       return {
         products: [],
         meta: { hasMore: false, currentOffset: offset, totalLoaded: offset },
@@ -480,37 +472,6 @@ const ProductsArea = ({ searchTerm }) => {
     }, 1000);
   };
 
-  // Clear cache function (utility for debugging)
-  const clearProductCache = (categoryId = null) => {
-    console.log("🧹 Clearing product cache...");
-    if (categoryId) {
-      // Clear cache for specific category
-      for (let i = 0; i < 10; i++) {
-        // Clear up to 10 pages of cache
-        const offset = i * ITEMS_PER_PAGE;
-        localStorage.removeItem(getCacheKey(categoryId, offset));
-      }
-      localStorage.removeItem(getCacheTimeKey(categoryId));
-      localStorage.removeItem(getMetaCacheKey(categoryId));
-      console.log(`✅ Cleared cache for category ${categoryId}`);
-    } else {
-      // Clear all product cache
-      const keys = Object.keys(localStorage);
-      let clearedCount = 0;
-      keys.forEach((key) => {
-        if (
-          key.startsWith(`products_${APP_BASE_ROUTE}_`) ||
-          key.startsWith(`products_time_${APP_BASE_ROUTE}_`) ||
-          key.startsWith(`products_meta_${APP_BASE_ROUTE}_`)
-        ) {
-          localStorage.removeItem(key);
-          clearedCount++;
-        }
-      });
-      console.log(`✅ Cleared ${clearedCount} cache entries`);
-    }
-  };
-
   if (storeError && !store) {
     return (
       <div
@@ -608,7 +569,6 @@ const ProductsArea = ({ searchTerm }) => {
 
   return (
     <>
-
       {/* Store Title Area (Sticky Top) - COMMENTED OUT */}
       {/* <section
         id="store-title-area"

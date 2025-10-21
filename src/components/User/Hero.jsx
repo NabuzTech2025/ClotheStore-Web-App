@@ -182,7 +182,7 @@ const Hero = () => {
           <div className="col-lg-12 hero-col" style={{ position: "relative" }}>
             <img
               className="img-fluid"
-              src={`https://magskrimages.s3.amazonaws.com/e969a66b46b0495d88f95f8c7777ae0b.jpg`}
+              src={`https://magskrimages.s3.amazonaws.com/391d1a58339c4888a3eeb91ea9245082.jpg`}
               alt="Restaurant Banner"
             />
 

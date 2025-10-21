@@ -19,6 +19,7 @@ import sortCategoriesByDisplayOrder from "../../utils/helper/User/sortCategories
 import { useViewport } from "../../contexts/ViewportContext";
 import { BiLoader } from "react-icons/bi";
 import { currentCurrency } from "../../utils/helper/currency_type";
+import { filterAvailableCategories } from "../../utils/categoryAvailability";
 
 const ProductsArea = ({ searchTerm }) => {
   const [categories, setCategories] = useState([]);
@@ -361,6 +362,15 @@ const ProductsArea = ({ searchTerm }) => {
     };
   }, [debouncedScrollSpy]);
 
+  const getAvailableCategories = useCallback((categories, serverTime) => {
+    if (!serverTime) {
+      // If no server time, show all categories (fallback)
+      return categories;
+    }
+
+    return filterAvailableCategories(categories, serverTime);
+  }, []);
+
   // Load categories
   useEffect(() => {
     if (isCategoriesFetched) return; // avoid refetch
@@ -371,8 +381,17 @@ const ProductsArea = ({ searchTerm }) => {
         const cats = res.data ?? res;
         setCategories(cats);
 
-        if (cats.length > 0) {
-          setSelectedCategoryId(cats[0].id);
+        // Filter categories based on availability
+        const availableCategories = getAvailableCategories(cats, serverTime);
+
+        const sortedCategories =
+          sortCategoriesByDisplayOrder(availableCategories);
+
+        setCategories(sortedCategories);
+
+        if (sortedCategories.length > 0) {
+          // Select the FIRST category after sorting
+          setSelectedCategoryId(sortedCategories[0].id);
           setIsInitialized(true);
         }
       } catch (err) {

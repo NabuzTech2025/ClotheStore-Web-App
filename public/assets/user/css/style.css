@@ -401,9 +401,9 @@ ul.hm-category-list li a {
   position: relative;
   transition: all 0.3s ease-in-out;
   border: none;
-  padding: 20px 15px 15px 15px;
-  min-width: 140px;
-  max-width: 160px;
+  padding: 8px 5px 9px 5px;
+  min-width: 125px;
+  max-width: 140px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 

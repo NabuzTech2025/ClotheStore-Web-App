@@ -402,9 +402,10 @@ ul.hm-category-list li a {
   transition: all 0.3s ease-in-out;
   border: none;
   padding: 8px 5px 9px 5px;
-  min-width: 125px;
-  max-width: 140px;
+  /* min-width: 125px; */
+  width: 173px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 181px;
 }
 
 ul.hm-category-list li a.active {
@@ -427,10 +428,10 @@ ul.hm-category-list li a img {
   width: 100px;
   height: 100px;
   object-fit: contain;
-  padding: 15px;
+  padding: 5px;
   background: transparent;
-  border-radius: 16px;
-  margin-bottom: 12px;
+  border-radius: 0;
+  margin-bottom: 5px;
   flex-shrink: 0;
 }
 

@@ -389,7 +389,7 @@ ul.hm-category-list li {
 
 ul.hm-category-list li a {
   background: #f9f6ff;
-  border-radius: 20px;
+  border-radius: 10px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -403,9 +403,9 @@ ul.hm-category-list li a {
   border: none;
   padding: 8px 5px 9px 5px;
   /* min-width: 125px; */
-  width: 173px;
+  width: 130px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  height: 181px;
+  height: 110px;
 }
 
 ul.hm-category-list li a.active {
@@ -425,8 +425,8 @@ ul.hm-category-list li a:hover {
 /* Image container with background */
 ul.hm-category-list li a img {
   display: block;
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
   padding: 5px;
   background: transparent;
@@ -437,7 +437,7 @@ ul.hm-category-list li a img {
 
 /* Category name */
 ul.hm-category-list li a h6 {
-  font-size: 15px;
+  font-size: 12px;
   text-align: center;
   font-weight: 700;
   margin: 0 0 5px 0;

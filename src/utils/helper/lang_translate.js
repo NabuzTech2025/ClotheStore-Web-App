@@ -265,10 +265,7 @@
 
 // export const currentLanguage = translations["de"];
 
-
-
 const lang_Type = {
-
   en: "English",
   de: "German",
 };
@@ -278,7 +275,7 @@ const translations = {
   en: {
     login: "Login",
     guest_login: "Guest Login",
-   
+
     register: "Register",
     login_or_register: "Login or Register",
     logout: "Logout",
@@ -366,9 +363,11 @@ const translations = {
     city: "City",
     country: "Country",
     contact_thank_you_heading: "Thank you for contacting us!",
-    contact_thank_you_message: "Your message has been successfully sent. We will get back to you soon.",
+    contact_thank_you_message:
+      "Your message has been successfully sent. We will get back to you soon.",
     contact_us_heading: "Contact Us",
-    contact_us_message: "Have questions? Fill out the form below and we'll get back to you as soon as possible.",
+    contact_us_message:
+      "Have questions? Fill out the form below and we'll get back to you as soon as possible.",
     reset_password_heading: "Reset Password",
     new_password_label: "New Password",
     confirm_password_label: "Confirm Password",
@@ -381,9 +380,11 @@ const translations = {
     form_fill_message: "Please fill out all the fields",
     payment_completed_message: "Payment completed successfully!",
     transaction_id: "Transaction ID",
-    online_payment_instructions: "Click the PayPal button above to complete your payment. Your order will be placed automatically after successful payment.",
+    online_payment_instructions:
+      "Click the PayPal button above to complete your payment. Your order will be placed automatically after successful payment.",
     cash_payment_instructions: "You will pay in cash upon delivery/pickup.",
-    paypal_insufficient_funds: "You don't have enough balance in your PayPal account to complete this payment.",
+    paypal_insufficient_funds:
+      "You don't have enough balance in your PayPal account to complete this payment.",
     paypal_capture_status: "Payment capture status:",
     paypal_not_completed: "Payment was not completed successfully.",
     paypal_failed: "Payment failed. Please try again.",
@@ -391,7 +392,8 @@ const translations = {
     paypal_cancelled: "Payment was cancelled.",
     paypal_complete_first: "Please complete the PayPal payment first.",
     paypal_declined: "Your payment method was declined. Please try another.",
-    paypal_card_expired: "Your card has expired. Please use a different payment method.",
+    paypal_card_expired:
+      "Your card has expired. Please use a different payment method.",
     paypal_pending: "Your payment is pending. Please wait for confirmation.",
     currency_symbol: "£",
     currency_code: "GBP",
@@ -489,9 +491,11 @@ const translations = {
     city: "City",
     country: "Country",
     contact_thank_you_heading: "Thank you for contacting us!",
-    contact_thank_you_message: "Your message has been successfully sent. We will get back to you soon.",
+    contact_thank_you_message:
+      "Your message has been successfully sent. We will get back to you soon.",
     contact_us_heading: "Contact Us",
-    contact_us_message: "Have questions? Fill out the form below and we'll get back to you as soon as possible.",
+    contact_us_message:
+      "Have questions? Fill out the form below and we'll get back to you as soon as possible.",
     reset_password_heading: "Reset Password",
     new_password_label: "New Password",
     confirm_password_label: "Confirm Password",
@@ -503,9 +507,11 @@ const translations = {
     form_fill_message: "Please fill out all the fields",
     payment_completed_message: "Payment completed successfully!",
     transaction_id: "Transaction ID",
-    online_payment_instructions: "Click the PayPal button above to complete your payment. Your order will be placed automatically after successful payment.",
+    online_payment_instructions:
+      "Click the PayPal button above to complete your payment. Your order will be placed automatically after successful payment.",
     cash_payment_instructions: "You will pay in cash upon delivery/pickup.",
-    paypal_insufficient_funds: "You don't have enough balance in your PayPal account to complete this payment.",
+    paypal_insufficient_funds:
+      "You don't have enough balance in your PayPal account to complete this payment.",
     paypal_capture_status: "Payment capture status:",
     paypal_not_completed: "Payment was not completed successfully.",
     paypal_failed: "Payment failed. Please try again.",
@@ -513,61 +519,66 @@ const translations = {
     paypal_cancelled: "Payment was cancelled.",
     paypal_complete_first: "Please complete the PayPal payment first.",
     paypal_declined: "Your payment method was declined. Please try another.",
-    paypal_card_expired: "Your card has expired. Please use a different payment method.",
+    paypal_card_expired:
+      "Your card has expired. Please use a different payment method.",
     paypal_pending: "Your payment is pending. Please wait for confirmation.",
     currency_symbol: "£",
     currency_code: "GBP",
   },
 };
 
-
 // Exchange rates cache
 let exchangeRatesCache = {
   rates: null,
   lastUpdated: null,
-  cacheExpiry: 60 * 60 * 1000 // 1 hour
+  cacheExpiry: 60 * 60 * 1000, // 1 hour
 };
 
 // Function to get translations based on language code
 export const getTranslations = (langCode = null) => {
   const currentLang = langCode || getCurrentLanguage();
-  return translations[currentLang] || translations["en"];
+  return translations[currentLang] || translations["de"];
 };
 
 // Function to get current language from localStorage or default
 export const getCurrentLanguage = () => {
-  return localStorage.getItem("app_language") || "en";
+  return localStorage.getItem("app_language") || "de";
 };
 
 // Fetch exchange rates from API
 const fetchExchangeRates = async () => {
   try {
-    const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+    const response = await fetch(
+      "https://api.exchangerate-api.com/v4/latest/USD"
+    );
     const data = await response.json();
-    
+
     exchangeRatesCache.rates = data.rates;
     exchangeRatesCache.lastUpdated = Date.now();
-    
+
     // Cache in localStorage
-    localStorage.setItem('exchange_rates_cache', JSON.stringify(exchangeRatesCache));
-    
+    localStorage.setItem(
+      "exchange_rates_cache",
+      JSON.stringify(exchangeRatesCache)
+    );
+
     return data.rates;
   } catch (error) {
-    console.error('Error fetching exchange rates:', error);
-    
+    console.error("Error fetching exchange rates:", error);
+
     // Try to get from localStorage cache
-    const cached = localStorage.getItem('exchange_rates_cache');
+    const cached = localStorage.getItem("exchange_rates_cache");
     if (cached) {
       const parsedCache = JSON.parse(cached);
       exchangeRatesCache = parsedCache;
       return parsedCache.rates;
     }
-    
+
     // Fallback rates
     return {
       USD: 1.0,
       EUR: 0.85,
-      GBP: 0.73
+      GBP: 0.73,
     };
   }
 };
@@ -575,22 +586,28 @@ const fetchExchangeRates = async () => {
 // Get exchange rates (with caching)
 const getExchangeRates = async () => {
   // Check if we have valid cached rates
-  if (exchangeRatesCache.rates && exchangeRatesCache.lastUpdated && 
-      (Date.now() - exchangeRatesCache.lastUpdated) < exchangeRatesCache.cacheExpiry) {
+  if (
+    exchangeRatesCache.rates &&
+    exchangeRatesCache.lastUpdated &&
+    Date.now() - exchangeRatesCache.lastUpdated < exchangeRatesCache.cacheExpiry
+  ) {
     return exchangeRatesCache.rates;
   }
-  
+
   // Try to load from localStorage
-  const cached = localStorage.getItem('exchange_rates_cache');
+  const cached = localStorage.getItem("exchange_rates_cache");
   if (cached) {
     const parsedCache = JSON.parse(cached);
-    if (parsedCache.rates && parsedCache.lastUpdated && 
-        (Date.now() - parsedCache.lastUpdated) < exchangeRatesCache.cacheExpiry) {
+    if (
+      parsedCache.rates &&
+      parsedCache.lastUpdated &&
+      Date.now() - parsedCache.lastUpdated < exchangeRatesCache.cacheExpiry
+    ) {
       exchangeRatesCache = parsedCache;
       return parsedCache.rates;
     }
   }
-  
+
   // Fetch new rates
   return await fetchExchangeRates();
 };
@@ -599,42 +616,50 @@ const getExchangeRates = async () => {
 export const convertCurrency = async (amount, fromCurrency, toCurrency) => {
   try {
     if (fromCurrency === toCurrency) return amount;
-    
+
     const rates = await getExchangeRates();
     if (!rates) return amount;
-    
+
     let convertedAmount = amount;
-    
+
     // Convert to USD first if not already
-    if (fromCurrency !== 'USD') {
+    if (fromCurrency !== "USD") {
       convertedAmount = amount / rates[fromCurrency];
     }
-    
+
     // Convert from USD to target currency
-    if (toCurrency !== 'USD') {
+    if (toCurrency !== "USD") {
       convertedAmount = convertedAmount * rates[toCurrency];
     }
-    
+
     return convertedAmount;
   } catch (error) {
-    console.error('Currency conversion error:', error);
+    console.error("Currency conversion error:", error);
     return amount; // Return original amount on error
   }
 };
 
 // Format currency with conversion
-export const formatCurrency = async (amount, langCode = null, baseCurrency = 'USD') => {
+export const formatCurrency = async (
+  amount,
+  langCode = null,
+  baseCurrency = "USD"
+) => {
   try {
     const currentLang = langCode || getCurrentLanguage();
     const lang = getTranslations(currentLang);
-    
+
     let finalAmount = amount;
-    
+
     // Convert currency if needed
     if (baseCurrency !== lang.currency_code) {
-      finalAmount = await convertCurrency(amount, baseCurrency, lang.currency_code);
+      finalAmount = await convertCurrency(
+        amount,
+        baseCurrency,
+        lang.currency_code
+      );
     }
-    
+
     // Format based on language
     if (currentLang === "en") {
       return `${lang.currency_symbol}${parseFloat(finalAmount).toFixed(2)}`;
@@ -643,7 +668,7 @@ export const formatCurrency = async (amount, langCode = null, baseCurrency = 'US
       return `${lang.currency_symbol}${parseFloat(finalAmount).toFixed(2)}`;
     }
   } catch (error) {
-    console.error('Currency formatting error:', error);
+    console.error("Currency formatting error:", error);
     // Fallback formatting
     const lang = getTranslations(langCode);
     return `${lang.currency_symbol}${parseFloat(amount).toFixed(2)}`;
@@ -654,7 +679,7 @@ export const formatCurrency = async (amount, langCode = null, baseCurrency = 'US
 export const formatCurrencySync = (amount, langCode = null) => {
   const currentLang = langCode || getCurrentLanguage();
   const lang = getTranslations(currentLang);
-  
+
   if (currentLang === "en") {
     return `${lang.currency_symbol}${parseFloat(amount).toFixed(2)}`;
   } else {

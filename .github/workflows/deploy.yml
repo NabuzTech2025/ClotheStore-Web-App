@@ -52,7 +52,7 @@ jobs:
             echo "VITE_APP_BASE_URL=https://setumarkt.de" >> $GITHUB_ENV
             echo "VITE_APP_COPYRIGHT_TEXT=Copyright © Setumarkt" >> $GITHUB_ENV
             echo "VITE_COUNTRY=GERMANY" >> $GITHUB_ENV
-            echo "VITE_PAYMENT_LIVE_CLIENT_ID=${{ secrets.PAYPAL_LIVE_CLIENT_ID_SETUMARKT }}" >> $GITHUB_ENV
+            echo "VITE_PAYMENT_LIVE_CLIENT_ID=${{ secrets.PAYPAL_LIVE_CLIENT_ID_RRFOOTBALLSHIRTS }}" >> $GITHUB_ENV
             
           else
             echo "❌ Unknown deployment target for tag: $TAG_NAME"

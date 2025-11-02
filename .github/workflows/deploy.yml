@@ -47,7 +47,7 @@ jobs:
           elif [[ "$TAG_NAME" == *"setumarkt"* ]] || [[ "$TAG_NAME" == "setu-"* ]]; then
             # Setumarkt deployment
             echo "image_tag=setumarkt" >> $GITHUB_OUTPUT
-            echo "server_ip=138.199.144.4s" >> $GITHUB_OUTPUT
+            echo "server_ip=138.199.144.4" >> $GITHUB_OUTPUT
             echo "port=3009" >> $GITHUB_OUTPUT
             echo "VITE_APP_NAME=Setumarkt" >> $GITHUB_ENV
             echo "VITE_STORE_ID=16" >> $GITHUB_ENV

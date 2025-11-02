@@ -188,7 +188,7 @@ const GuestAddressPage = () => {
                     />
                   </p> */}
                   <p>
-                    <button type="submit">Continue</button>
+                    <button type="submit">{currentLanguage.continue}</button>
                   </p>
                   <p style={{ textAlign: "center", marginTop: "15px" }}>
                     {currentLanguage.already_have_account}{" "}

@@ -230,7 +230,7 @@ const RegisterPage = () => {
 
                   <p>
                     <button type="submit" disabled={loading}>
-                      {loading ? "Please wait..." : "Continue"}
+                      {loading ? "Please wait..." : currentLanguage.continue}
                     </button>
                   </p>
                   <p style={{ textAlign: "center", marginTop: "15px" }}>

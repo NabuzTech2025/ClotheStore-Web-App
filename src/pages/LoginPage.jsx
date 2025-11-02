@@ -280,7 +280,7 @@ const LoginPage = () => {
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     <p>
                       <button type="submit" disabled={loading}>
-                        {loading ? "Logging in..." : "Continue"}
+                        {loading ? "Logging in..." : currentLanguage.continue}
                       </button>
                     </p>
                   </form>

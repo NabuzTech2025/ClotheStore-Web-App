@@ -519,7 +519,7 @@ const CartModal = () => {
                   color: "white",
                 }}
               >
-                Continue
+                {currentLanguage.continue}
                 <img
                   src={`assets/user/img/right-blk-arrow.svg`}
                   alt="Order"

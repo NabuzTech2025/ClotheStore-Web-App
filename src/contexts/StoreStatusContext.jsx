@@ -24,6 +24,7 @@ export const StoreStatusProvider = ({ children }) => {
   const [currentTimeSlot, setCurrentTimeSlot] = useState(null);
   const [postCode, setPostCode] = useState("");
   const [allPostCodes, setAllPostCodes] = useState([]);
+  const [brandName, setBrandName] = useState("");
 
   // Store server time sync data
   const [serverTime, setServerTime] = useState(null);
@@ -403,6 +404,10 @@ export const StoreStatusProvider = ({ children }) => {
     if (storedPostcode) {
       setPostCode(storedPostcode);
     }
+    const brand = import.meta.env.VITE_APP_NAME;
+    if (brand) {
+      setBrandName(String(brand).toLocaleLowerCase());
+    }
   }, []);
 
   return (
@@ -423,6 +428,7 @@ export const StoreStatusProvider = ({ children }) => {
         setPostCode,
         allPostCodes,
         setAllPostCodes,
+        brandName,
       }}
     >
       {children}

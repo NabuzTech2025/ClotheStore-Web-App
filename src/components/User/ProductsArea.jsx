@@ -70,7 +70,7 @@ const ProductsArea = ({ searchTerm }) => {
     return products.filter((product) => {
       if (seen.has(product.id)) {
         console.warn(
-          `Duplicate product found: ${product.id} - ${product.name}`
+          `Duplicate product found: ${product.id} - ${product.name}`,
         );
         return false;
       }
@@ -83,7 +83,7 @@ const ProductsArea = ({ searchTerm }) => {
   const loadProductsForCategory = async (
     categoryId,
     offset = 0,
-    useCache = true
+    useCache = true,
   ) => {
     const cacheKey = getCacheKey(categoryId, offset);
     const cacheTimeKey = getCacheTimeKey(categoryId);
@@ -108,7 +108,7 @@ const ProductsArea = ({ searchTerm }) => {
 
     try {
       const response = await fetch(
-        `https://magskr.com/products/limitbycat/${ITEMS_PER_PAGE}?offset=${offset}&store_id=${STORE_ID}&category_id=${categoryId}`
+        `https://magskr.com/products/limitbycat/${ITEMS_PER_PAGE}?offset=${offset}&store_id=${STORE_ID}&category_id=${categoryId}`,
       );
 
       if (!response.ok) {
@@ -116,7 +116,7 @@ const ProductsArea = ({ searchTerm }) => {
       }
 
       const data = await response.json();
-      const products = Array.isArray(data) ? data : [];
+      const products = Array.isArray(data.products) ? data.products : [];
 
       // Remove duplicates immediately after API call
       const uniqueProducts = removeDuplicateProducts(products);
@@ -137,7 +137,7 @@ const ProductsArea = ({ searchTerm }) => {
     } catch (error) {
       console.error(
         `❌ Error loading products for category ${categoryId}:`,
-        error
+        error,
       );
       return {
         products: [],
@@ -195,7 +195,7 @@ const ProductsArea = ({ searchTerm }) => {
     } catch (error) {
       console.error(
         `Error loading more products for category ${categoryId}:`,
-        error
+        error,
       );
     } finally {
       setLoadingMore((prev) => ({ ...prev, [categoryId]: false }));
@@ -230,13 +230,13 @@ const ProductsArea = ({ searchTerm }) => {
         {
           rootMargin: "100px",
           threshold: 0.1,
-        }
+        },
       );
 
       observer.observe(target);
       observerRefs.current[categoryId] = observer;
     },
-    [categoryMeta, loadingMore] // Added loadingMore to dependencies
+    [categoryMeta, loadingMore], // Added loadingMore to dependencies
   );
 
   // Effect to setup observers when categories or products change
@@ -309,7 +309,7 @@ const ProductsArea = ({ searchTerm }) => {
       setSelectedCategoryId(activeSection.id);
 
       const categoryElement = document.querySelector(
-        `.hm-category-list li a[data-category-id="${activeSection.id}"]`
+        `.hm-category-list li a[data-category-id="${activeSection.id}"]`,
       ).parentElement;
 
       if (categoryElement) {
@@ -418,12 +418,12 @@ const ProductsArea = ({ searchTerm }) => {
             const { products, meta } = await loadProductsForCategory(
               category.id,
               0,
-              true
+              true,
             );
             // Remove duplicates even in initial load
             productsData[category.id] = removeDuplicateProducts(products);
             metaData[category.id] = meta;
-          })
+          }),
         );
 
         setAllProducts(productsData);
@@ -468,7 +468,7 @@ const ProductsArea = ({ searchTerm }) => {
     isUserClick.current = true;
 
     const titleElement = document.querySelector(
-      `#cat-section-${id} .products-categroy-title-row`
+      `#cat-section-${id} .products-categroy-title-row`,
     );
     const sectionElement = document.getElementById(`cat-section-${id}`);
     const targetElement = titleElement || sectionElement;
@@ -574,7 +574,7 @@ const ProductsArea = ({ searchTerm }) => {
     // Ensure no duplicates even in filtered results
     const uniqueProducts = removeDuplicateProducts(categoryProducts);
     return uniqueProducts.filter((product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
   };
 

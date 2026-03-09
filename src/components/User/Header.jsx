@@ -175,6 +175,18 @@ const Header = ({ status, onSearch }) => {
                   href="https://www.instagram.com/rrfootballshirts"
                   target="_blank"
                   style={{
+                    marginRight: "12px",
+                    fontSize: "16px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Contact Us
+                </a>
+
+                <a
+                  href="https://www.instagram.com/rrfootballshirts"
+                  target="_blank"
+                  style={{
                     marginRight: "10px",
                   }}
                 >

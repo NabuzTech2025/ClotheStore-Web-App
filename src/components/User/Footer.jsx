@@ -10,11 +10,27 @@ const Footer = () => {
     import.meta.env.VITE_APP_COPYRIGHT_TEXT || "Default Copyright Text";
   return (
     <footer
-      className={`text-center pb-5 ${
+      className={`text-center pb-5  ${
         isMobileViewport ? "text-sm" : "text-[16px]"
       }`}
     >
-      <span>{copyrightText}</span>&nbsp; &nbsp;
+      <a
+        href="https://www.instagram.com/rrfootballshirts"
+        target="_blank"
+        style={{
+          marginRight: "10px",
+        }}
+      >
+        <img
+          style={{
+            width: "30px",
+            height: "30px",
+          }}
+          src={`assets/images/instagram.png`}
+          alt="instagram"
+        />
+        <h5>Instagram</h5>
+      </a>
       {currentCurrency.show && (
         <Link
           to="/privacypolicy"

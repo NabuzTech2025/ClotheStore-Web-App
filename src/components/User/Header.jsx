@@ -170,6 +170,23 @@ const Header = ({ status, onSearch }) => {
             <div className="col-lg-2 col-sm-2 col-6">
               <div className="header-login" style={{ position: "relative" }}>
                 {/* Mobile search icon */}
+
+                <a
+                  href="https://www.instagram.com/rrfootballshirts"
+                  target="_blank"
+                  style={{
+                    marginRight: "10px",
+                  }}
+                >
+                  <img
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                    }}
+                    src={`assets/images/instagram.png`}
+                    alt="instagram"
+                  />
+                </a>
                 <a
                   className="mobile-search d-sm-none"
                   href="#"
